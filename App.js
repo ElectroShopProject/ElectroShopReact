@@ -9,6 +9,7 @@
 import React from 'react';
 import type {Node} from 'react';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -21,10 +22,19 @@ import {
 import {
   Colors,
   DebugInstructions,
-  Header,
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import {BrandAppBar} from './presentation/components/BrandAppBar';
+
+const MainHeader = () => {
+  return (
+    <View style={styles.bigHeader}>
+      <Image source={require('./assets/images/logo.png')} />
+    </View>
+  );
+};
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -62,10 +72,10 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <BrandAppBar />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -91,6 +101,10 @@ const App: () => Node = () => {
 };
 
 const styles = StyleSheet.create({
+  appBar: {
+    backgroundColor: '#FFFFFF',
+  },
+
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -106,6 +120,13 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+
+  bigHeader: {
+    marginVertical: 64,
+    marginHorizontal: 32,
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });
 
