@@ -16,7 +16,9 @@ export const BrandAppBar = () => {
         />
       }
       enableColorOnDark={true}
-      leading={() => <IconButton icon={() => <Icon name="menu" size={24} />} />}
+      leading={() => (
+        <IconButton icon={() => <Icon name="arrow-left" size={24} />} />
+      )}
       trailing={() => (
         <IconButton icon={() => <Icon name="cart" size={24} />} />
       )}
