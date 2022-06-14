@@ -1,20 +1,25 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {AppBar} from '@react-native-material/core';
+import {AppBar, Icon, IconButton} from '@react-native-material/core';
+import {Image, Text} from 'react-native';
 
 export const BrandAppBar = () => {
   return (
     <AppBar
-      leading={[
+      title={
         <Image
           source={require('../../assets/images/logo.png')}
           style={{
-            width: 100,
-            alignContent: 'center',
+            flex: 1,
+            aspectRatio: 1.8,
+            resizeMode: 'contain',
           }}
-          resizeMethod={'scale'}
-        />,
-      ]}
+        />
+      }
+      enableColorOnDark={true}
+      leading={() => <IconButton icon={() => <Icon name="menu" size={24} />} />}
+      trailing={() => (
+        <IconButton icon={() => <Icon name="cart" size={24} />} />
+      )}
       centerTitle={true}
       style={{
         backgroundColor: '#FFFFFF',
