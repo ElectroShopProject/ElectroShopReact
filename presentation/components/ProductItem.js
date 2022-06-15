@@ -1,4 +1,4 @@
-import {Spacer, Surface} from '@react-native-material/core';
+import {Surface} from '@react-native-material/core';
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
