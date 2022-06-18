@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import type {Node} from 'react';
-import {ProductsScreen} from './presentation/screens/ProductsScreen';
 import Toast from 'react-native-toast-message';
+import {LoginScreen} from './presentation/screens/LoginScreen';
 
 const App: () => Node = () => {
   return (
     <>
-      <ProductsScreen />
+      <LoginScreen />
       <Toast />
     </>
   );
