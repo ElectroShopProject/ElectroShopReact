@@ -4,12 +4,20 @@ import {
   FlatList,
   SafeAreaView,
   StatusBar,
+  View,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
-import {Flex, IconComponentProvider} from '@react-native-material/core';
+import {
+  Flex,
+  HStack,
+  IconComponentProvider,
+  Stack,
+  Text,
+} from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
-import {ProductItem} from '../components/ProductItem';
 import {Product} from '../../data/models/Product';
+import {Manufacturer} from '../../data/models/Manufacturer';
+import {ProductItem} from '../components/ProductItem';
 
 export const ProductsScreen: () => Node = () => {
   const [isLoading, setLoading] = useState(true);
@@ -22,6 +30,7 @@ export const ProductsScreen: () => Node = () => {
       );
       const json = await response.json();
       setData(json);
+      return json;
     } catch (error) {
       console.error(error);
     } finally {
@@ -38,17 +47,35 @@ export const ProductsScreen: () => Node = () => {
       <SafeAreaView>
         <StatusBar />
         <BrandAppBar />
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <Flex>
-            <FlatList
-              data={data}
-              keyExtractor={({product, _}) => new Product()}
-              renderItem={product => <ProductItem product={new Product()} />}
-            />
-          </Flex>
-        )}
+        <HStack>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="black" />
+          ) : (
+            <Flex fill={1}>
+              <FlatList
+                data={data}
+                keyExtractor={product => product.id}
+                renderItem={({item}) => {
+                  let createdProduct = Product.create({
+                    id: item.id,
+                    name: item.name,
+                    category: item.category,
+                    netPrice: item.netPrice,
+                    grossPrice: item.grossPrice,
+                    taxRate: item.taxRate,
+                    manufacturer: Manufacturer.create({
+                      id: item.manufacturer.id,
+                      name: item.manufacturer.name,
+                      country: item.manufacturer.country,
+                    }),
+                  });
+
+                  return <ProductItem product={createdProduct} />;
+                }}
+              />
+            </Flex>
+          )}
+        </HStack>
       </SafeAreaView>
     </IconComponentProvider>
   );
