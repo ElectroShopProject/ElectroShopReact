@@ -4,20 +4,19 @@ import {
   FlatList,
   SafeAreaView,
   StatusBar,
-  View,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
 import {
   Flex,
-  HStack,
   IconComponentProvider,
-  Stack,
   Text,
+  VStack,
 } from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
 import {Product} from '../../data/models/Product';
 import {Manufacturer} from '../../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
+import Toast from 'react-native-toast-message';
 
 export const ProductsScreen: () => Node = () => {
   const [isLoading, setLoading] = useState(true);
@@ -34,7 +33,7 @@ export const ProductsScreen: () => Node = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -47,12 +46,23 @@ export const ProductsScreen: () => Node = () => {
       <SafeAreaView>
         <StatusBar />
         <BrandAppBar />
-        <HStack>
-          {isLoading ? (
-            <ActivityIndicator size="large" color="black" />
+        <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
+          <Text variant={'h4'}>Products</Text>
+        </Flex>
+        <VStack backgroundColor={'yellow'}>
+          {isLoading ? ( //TODO Center loading and fix scroll
+            <Flex
+              direction={'column'}
+              items={'stretch'}
+              self={'center'}
+              content={'stretch'}
+              backgroundColor={'red'}>
+              <ActivityIndicator size="large" color="black" center />
+            </Flex>
           ) : (
-            <Flex fill={1}>
+            <Flex fill>
               <FlatList
+                nestedScrollView
                 data={data}
                 keyExtractor={product => product.id}
                 renderItem={({item}) => {
@@ -70,12 +80,24 @@ export const ProductsScreen: () => Node = () => {
                     }),
                   });
 
-                  return <ProductItem product={createdProduct} />;
+                  return (
+                    <ProductItem
+                      product={createdProduct}
+                      onAddToCart={() => {
+                        setLoading(!isLoading);
+                        Toast.show({
+                          position: 'bottom',
+                          type: 'success',
+                          text1: 'Added to cart',
+                        });
+                      }}
+                    />
+                  );
                 }}
               />
             </Flex>
           )}
-        </HStack>
+        </VStack>
       </SafeAreaView>
     </IconComponentProvider>
   );
