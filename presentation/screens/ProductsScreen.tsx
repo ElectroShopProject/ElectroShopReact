@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
+  ScrollView,
   StatusBar,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
@@ -33,7 +34,7 @@ export const ProductsScreen: () => Node = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -49,20 +50,12 @@ export const ProductsScreen: () => Node = () => {
         <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
           <Text variant={'h4'}>Products</Text>
         </Flex>
-        <VStack backgroundColor={'yellow'}>
+        <ScrollView>
           {isLoading ? ( //TODO Center loading and fix scroll
-            <Flex
-              direction={'column'}
-              items={'stretch'}
-              self={'center'}
-              content={'stretch'}
-              backgroundColor={'red'}>
-              <ActivityIndicator size="large" color="black" center />
-            </Flex>
+            <ActivityIndicator size="large" color="black" center />
           ) : (
             <Flex fill>
               <FlatList
-                nestedScrollView
                 data={data}
                 keyExtractor={product => product.id}
                 renderItem={({item}) => {
@@ -97,7 +90,7 @@ export const ProductsScreen: () => Node = () => {
               />
             </Flex>
           )}
-        </VStack>
+        </ScrollView>
       </SafeAreaView>
     </IconComponentProvider>
   );
