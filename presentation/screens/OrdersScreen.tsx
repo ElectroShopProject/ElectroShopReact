@@ -5,21 +5,17 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  TouchableHighlight,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
-import {
-  Flex,
-  IconComponentProvider,
-  Text,
-  VStack,
-} from '@react-native-material/core';
+import {Flex, IconComponentProvider, Text} from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
 import {Product} from '../../data/models/Product';
 import {Manufacturer} from '../../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
 import Toast from 'react-native-toast-message';
 
-export const ProductsScreen: () => Node = () => {
+export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]); // Array of products
 
@@ -48,7 +44,7 @@ export const ProductsScreen: () => Node = () => {
         <StatusBar />
         <BrandAppBar />
         <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
-          <Text variant={'h4'}>Products</Text>
+          <Text variant={'h4'}>Orders</Text>
         </Flex>
         <ScrollView>
           {isLoading ? ( //TODO Center loading and fix scroll
@@ -74,17 +70,23 @@ export const ProductsScreen: () => Node = () => {
                   });
 
                   return (
-                    <ProductItem
-                      product={createdProduct}
-                      onAddToCart={() => {
-                        setLoading(!isLoading);
-                        Toast.show({
-                          position: 'bottom',
-                          type: 'success',
-                          text1: 'Added to cart',
-                        });
+                    <TouchableHighlight
+                      onPress={() => {
+                        navigation.navigate('Products');
                       }}
-                    />
+                      underlayColor="white">
+                      <ProductItem
+                        product={createdProduct}
+                        onAddToCart={() => {
+                          setLoading(!isLoading);
+                          Toast.show({
+                            position: 'bottom',
+                            type: 'success',
+                            text1: 'Added to cart',
+                          });
+                        }}
+                      />
+                    </TouchableHighlight>
                   );
                 }}
               />
