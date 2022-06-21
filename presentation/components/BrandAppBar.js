@@ -1,8 +1,11 @@
 import React from 'react';
 import {AppBar, Icon, IconButton} from '@react-native-material/core';
 import {Image, Text} from 'react-native';
+import {Product} from '../../data/models/Product';
 
-export const BrandAppBar = () => {
+export const BrandAppBar: (value: {
+  navigation: any,
+}) => Node = (value: {navigation: any}) => {
   return (
     <AppBar
       title={
@@ -16,9 +19,21 @@ export const BrandAppBar = () => {
         />
       }
       enableColorOnDark={true}
-      leading={() => (
-        <IconButton icon={() => <Icon name="arrow-left" size={24} />} />
-      )}
+      leading={() =>
+        value.navigation === undefined ? (
+          <></>
+        ) : (
+          <IconButton
+            icon={() => (
+              <Icon
+                name="arrow-left"
+                size={24}
+                onPress={() => value.navigation.pop()}
+              />
+            )}
+          />
+        )
+      }
       trailing={() => (
         <IconButton icon={() => <Icon name="cart" size={24} />} />
       )}
