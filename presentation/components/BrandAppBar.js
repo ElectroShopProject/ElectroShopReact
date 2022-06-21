@@ -1,9 +1,9 @@
 import React from 'react';
 import {AppBar, Icon, IconButton} from '@react-native-material/core';
-import {Image, Text} from 'react-native';
-import {Product} from '../../data/models/Product';
+import {Image} from 'react-native';
 
 export const BrandAppBar: (value: {
+  allowBack: boolean,
   navigation: any,
 }) => Node = (value: {navigation: any}) => {
   return (
@@ -20,9 +20,7 @@ export const BrandAppBar: (value: {
       }
       enableColorOnDark={true}
       leading={() =>
-        value.navigation === undefined ? (
-          <></>
-        ) : (
+        value.allowBack ? (
           <IconButton
             icon={() => (
               <Icon
@@ -32,10 +30,15 @@ export const BrandAppBar: (value: {
               />
             )}
           />
+        ) : (
+          <></>
         )
       }
       trailing={() => (
-        <IconButton icon={() => <Icon name="cart" size={24} />} />
+        <IconButton
+          icon={() => <Icon name="cart" size={24} />}
+          onPress={() => value.navigation.navigate('Cart')}
+        />
       )}
       centerTitle={true}
       style={{

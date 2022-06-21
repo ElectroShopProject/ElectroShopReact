@@ -5,26 +5,33 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  View,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
-import {Flex, IconComponentProvider, Text} from '@react-native-material/core';
+import {
+  Button,
+  Flex,
+  IconComponentProvider,
+  Text,
+} from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
 import {Product} from '../../data/models/Product';
 import {Manufacturer} from '../../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
 import Toast from 'react-native-toast-message';
 
-export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
+export const CartScreen: ({navigation}) => Node = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]); // Array of products
+  const [data, setData] = useState({});
 
-  const getProducts = async () => {
+  const loadCart = async () => {
     try {
       const response = await fetch(
-        'https://electroshopapi.herokuapp.com/products',
+        'https://electroshopapi.herokuapp.com/cart/' + global.cartId,
       );
       const json = await response.json();
       setData(json);
+      console.log('Cart = ' + json);
       return json;
     } catch (error) {
       console.error(error);
@@ -33,10 +40,10 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
     }
   };
 
-  const addProductToCart = async (id: string) => {
+  const removeProductFromCart = async (id: string) => {
     try {
       // Then add product
-      await fetch('https://electroshopapi.herokuapp.com/cart/products/add', {
+      await fetch('https://electroshopapi.herokuapp.com/cart/products/remove', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -47,6 +54,7 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
           productId: id,
         }),
       });
+      await loadCart();
     } catch (error) {
       console.error(error);
     } finally {
@@ -55,17 +63,17 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
   };
 
   useEffect(() => {
-    getProducts();
+    loadCart();
   }, []);
 
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-      <SafeAreaView>
+      <SafeAreaView flex={1}>
         <StatusBar />
         <BrandAppBar allowBack={true} navigation={navigation} />
         <ScrollView>
           <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
-            <Text variant={'h4'}>Products</Text>
+            <Text variant={'h4'}>Your cart</Text>
           </Flex>
           {isLoading ? ( //TODO Center loading and fix scroll
             <ActivityIndicator size="large" color="black" center />
@@ -73,7 +81,7 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
             <Flex fill>
               <ScrollView horizontal={true}>
                 <FlatList
-                  data={data}
+                  data={data.products}
                   keyExtractor={product => product.id}
                   renderItem={({item}) => {
                     let createdProduct = Product.create({
@@ -92,11 +100,11 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
 
                     return (
                       <ProductItem
-                        isCartProduct={false}
+                        isCartProduct={true}
                         product={createdProduct}
                         onAction={() => {
                           setLoading(!isLoading);
-                          addProductToCart(createdProduct.id);
+                          removeProductFromCart(createdProduct.id);
                           Toast.show({
                             position: 'bottom',
                             type: 'success',
@@ -111,6 +119,18 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
             </Flex>
           )}
         </ScrollView>
+        <View
+          style={{
+            backgroundColor: 'white',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: 24,
+          }}>
+          <Text>Some text</Text>
+          <Button title={'Finalize order'} />
+        </View>
       </SafeAreaView>
     </IconComponentProvider>
   );
