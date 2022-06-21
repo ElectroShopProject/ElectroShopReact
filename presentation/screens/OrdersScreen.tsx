@@ -5,27 +5,30 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  TouchableHighlight,
 } from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
-import {Flex, IconComponentProvider, Text} from '@react-native-material/core';
+import {
+  Button,
+  Flex,
+  IconComponentProvider,
+  Text,
+} from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
-import {Product} from '../../data/models/Product';
-import {Manufacturer} from '../../data/models/Manufacturer';
-import {ProductItem} from '../components/ProductItem';
-import Toast from 'react-native-toast-message';
+import {OrderItem} from '../components/OrderItem';
 
-export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
+export const OrdersScreen: (navigation: any) => Node = ({_}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]); // Array of products
 
-  const getProducts = async () => {
+  const getOrders = async () => {
     try {
       const response = await fetch(
-        'https://electroshopapi.herokuapp.com/products',
+        'https://electroshopapi.herokuapp.com/user/orders?userId=' +
+          global.userId,
       );
       const json = await response.json();
       setData(json);
+      console.log(json);
       return json;
     } catch (error) {
       console.error(error);
@@ -35,64 +38,42 @@ export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
   };
 
   useEffect(() => {
-    getProducts();
+    getOrders();
   }, []);
 
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <StatusBar />
-        <BrandAppBar />
+        <BrandAppBar navigation={undefined} />
         <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
           <Text variant={'h4'}>Orders</Text>
         </Flex>
         <ScrollView>
-          {isLoading ? ( //TODO Center loading and fix scroll
-            <ActivityIndicator size="large" color="black" center />
-          ) : (
-            <Flex fill>
-              <FlatList
-                data={data}
-                keyExtractor={product => product.id}
-                renderItem={({item}) => {
-                  let createdProduct = Product.create({
-                    id: item.id,
-                    name: item.name,
-                    category: item.category,
-                    netPrice: item.netPrice,
-                    grossPrice: item.grossPrice,
-                    taxRate: item.taxRate,
-                    manufacturer: Manufacturer.create({
-                      id: item.manufacturer.id,
-                      name: item.manufacturer.name,
-                      country: item.manufacturer.country,
-                    }),
-                  });
-
-                  return (
-                    <TouchableHighlight
-                      onPress={() => {
-                        navigation.navigate('Products');
-                      }}
-                      underlayColor="white">
-                      <ProductItem
-                        product={createdProduct}
-                        onAddToCart={() => {
-                          setLoading(!isLoading);
-                          Toast.show({
-                            position: 'bottom',
-                            type: 'success',
-                            text1: 'Added to cart',
-                          });
-                        }}
-                      />
-                    </TouchableHighlight>
-                  );
-                }}
-              />
-            </Flex>
-          )}
+          <ScrollView horizontal={true}>
+            {isLoading ? ( //TODO Center loading and fix scroll
+              <ActivityIndicator size="large" color="black" center />
+            ) : (
+              <Flex>
+                <FlatList
+                  data={data}
+                  keyExtractor={order => order.id}
+                  renderItem={({item}) => <OrderItem order={item} />}
+                />
+              </Flex>
+            )}
+          </ScrollView>
         </ScrollView>
+        <Button
+          title={'Create new order'}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            margin: 32,
+          }}
+        />
       </SafeAreaView>
     </IconComponentProvider>
   );
