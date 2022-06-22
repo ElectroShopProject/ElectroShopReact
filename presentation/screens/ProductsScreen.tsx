@@ -33,6 +33,27 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
     }
   };
 
+  const addProductToCart = async (id: string) => {
+    try {
+      // Then add product
+      await fetch('https://electroshopapi.herokuapp.com/cart/products/add', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cartId: global.cartId,
+          productId: id,
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -41,7 +62,7 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView>
         <StatusBar />
-        <BrandAppBar navigation={navigation} />
+        <BrandAppBar allowBack={true} showCart={true} navigation={navigation} />
         <ScrollView>
           <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
             <Text variant={'h4'}>Products</Text>
@@ -50,39 +71,43 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
             <ActivityIndicator size="large" color="black" center />
           ) : (
             <Flex fill>
-              <FlatList
-                data={data}
-                keyExtractor={product => product.id}
-                renderItem={({item}) => {
-                  let createdProduct = Product.create({
-                    id: item.id,
-                    name: item.name,
-                    category: item.category,
-                    netPrice: item.netPrice,
-                    grossPrice: item.grossPrice,
-                    taxRate: item.taxRate,
-                    manufacturer: Manufacturer.create({
-                      id: item.manufacturer.id,
-                      name: item.manufacturer.name,
-                      country: item.manufacturer.country,
-                    }),
-                  });
+              <ScrollView horizontal={true}>
+                <FlatList
+                  data={data}
+                  keyExtractor={product => product.id}
+                  renderItem={({item}) => {
+                    let createdProduct = Product.create({
+                      id: item.id,
+                      name: item.name,
+                      category: item.category,
+                      netPrice: item.netPrice,
+                      grossPrice: item.grossPrice,
+                      taxRate: item.taxRate,
+                      manufacturer: Manufacturer.create({
+                        id: item.manufacturer.id,
+                        name: item.manufacturer.name,
+                        country: item.manufacturer.country,
+                      }),
+                    });
 
-                  return (
-                    <ProductItem
-                      product={createdProduct}
-                      onAddToCart={() => {
-                        setLoading(!isLoading);
-                        Toast.show({
-                          position: 'bottom',
-                          type: 'success',
-                          text1: 'Added to cart',
-                        });
-                      }}
-                    />
-                  );
-                }}
-              />
+                    return (
+                      <ProductItem
+                        isCartProduct={false}
+                        product={createdProduct}
+                        onAction={() => {
+                          setLoading(!isLoading);
+                          addProductToCart(createdProduct.id);
+                          Toast.show({
+                            position: 'bottom',
+                            type: 'success',
+                            text1: 'Added to cart',
+                          });
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </ScrollView>
             </Flex>
           )}
         </ScrollView>

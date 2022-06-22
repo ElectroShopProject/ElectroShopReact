@@ -16,9 +16,32 @@ import {
 import React, {useEffect, useState} from 'react';
 import {OrderItem} from '../components/OrderItem';
 
-export const OrdersScreen: (navigation: any) => Node = ({_}) => {
+export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]); // Array of products
+
+  const createCart = async () => {
+    try {
+      const response = await fetch(
+        'https://electroshopapi.herokuapp.com/cart',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({userId: global.userId}),
+        },
+      );
+      const cart = await response.json();
+      global.cartId = cart.id;
+      console.log(global.cartId);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getOrders = async () => {
     try {
@@ -29,6 +52,7 @@ export const OrdersScreen: (navigation: any) => Node = ({_}) => {
       const json = await response.json();
       setData(json);
       console.log(json);
+      await createCart();
       return json;
     } catch (error) {
       console.error(error);
@@ -45,7 +69,11 @@ export const OrdersScreen: (navigation: any) => Node = ({_}) => {
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView style={{flex: 1}}>
         <StatusBar />
-        <BrandAppBar navigation={undefined} />
+        <BrandAppBar
+          allowBack={false}
+          showCart={true}
+          navigation={navigation}
+        />
         <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
           <Text variant={'h4'}>Orders</Text>
         </Flex>
@@ -72,6 +100,9 @@ export const OrdersScreen: (navigation: any) => Node = ({_}) => {
             left: 0,
             right: 0,
             margin: 32,
+          }}
+          onPress={() => {
+            navigation.navigate('Products');
           }}
         />
       </SafeAreaView>

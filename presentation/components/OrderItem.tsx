@@ -1,14 +1,8 @@
-import {
-  Divider,
-  Flex,
-  Spacer,
-  Surface,
-  Text,
-} from '@react-native-material/core';
+import {Divider, Flex, Surface, Text} from '@react-native-material/core';
 import React from 'react';
-import {Order} from '../../data/models/Order';
 import {Product} from '../../data/models/Product';
 import {View} from 'react-native';
+import {Order} from '../../data/models/Order';
 
 export const OrderItem = (props: {order: Order}): Node => {
   function getCountedProducts(products: Product[]) {

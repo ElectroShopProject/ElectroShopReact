@@ -15,7 +15,8 @@ import {View} from 'react-native';
 
 export const ProductItem = (value: {
   product: Product;
-  onAddToCart: Function;
+  onAction: Function;
+  isCartProduct: boolean;
 }): Node => {
   return (
     <Flex
@@ -49,8 +50,14 @@ export const ProductItem = (value: {
           <Flex fill={false} center={true}>
             <IconButton
               margin={8}
-              icon={<Icon name="cart-plus" size={24} />}
-              onPress={() => value.onAddToCart()}
+              icon={
+                value.isCartProduct ? (
+                  <Icon name="delete" size={24} />
+                ) : (
+                  <Icon name="cart-plus" size={24} />
+                )
+              }
+              onPress={() => value.onAction()}
             />
           </Flex>
         </Flex>
