@@ -69,7 +69,11 @@ export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView style={{flex: 1}}>
         <StatusBar />
-        <BrandAppBar allowBack={false} navigation={navigation} />
+        <BrandAppBar
+          allowBack={false}
+          showCart={true}
+          navigation={navigation}
+        />
         <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
           <Text variant={'h4'}>Orders</Text>
         </Flex>

@@ -62,7 +62,7 @@ export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView>
         <StatusBar />
-        <BrandAppBar allowBack={true} navigation={navigation} />
+        <BrandAppBar allowBack={true} showCart={true} navigation={navigation} />
         <ScrollView>
           <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
             <Text variant={'h4'}>Products</Text>

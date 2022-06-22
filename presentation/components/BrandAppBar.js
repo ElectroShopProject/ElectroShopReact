@@ -4,6 +4,7 @@ import {Image} from 'react-native';
 
 export const BrandAppBar: (value: {
   allowBack: boolean,
+  showCart: boolean,
   navigation: any,
 }) => Node = (value: {navigation: any}) => {
   return (
@@ -34,12 +35,16 @@ export const BrandAppBar: (value: {
           <></>
         )
       }
-      trailing={() => (
-        <IconButton
-          icon={() => <Icon name="cart" size={24} />}
-          onPress={() => value.navigation.navigate('Cart')}
-        />
-      )}
+      trailing={() =>
+        value.showCart ? (
+          <IconButton
+            icon={() => <Icon name="cart" size={24} />}
+            onPress={() => value.navigation.navigate('Cart')}
+          />
+        ) : (
+          <></>
+        )
+      }
       centerTitle={true}
       style={{
         backgroundColor: '#FFFFFF',

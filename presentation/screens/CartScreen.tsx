@@ -10,6 +10,7 @@ import {
 import {BrandAppBar} from '../components/BrandAppBar';
 import {
   Button,
+  Divider,
   Flex,
   IconComponentProvider,
   Text,
@@ -19,8 +20,10 @@ import {Product} from '../../data/models/Product';
 import {Manufacturer} from '../../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
 import Toast from 'react-native-toast-message';
+import {BottomSheet} from 'react-native-btr';
 
 export const CartScreen: ({navigation}) => Node = ({navigation}) => {
+  const [visible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -62,15 +65,68 @@ export const CartScreen: ({navigation}) => Node = ({navigation}) => {
     }
   };
 
+  const finalize = async () => {
+    try {
+      // Then add product
+      await fetch('https://electroshopapi.herokuapp.com/summary/completion', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cartId: global.cartId,
+        }),
+      });
+      toggleBottomNavigationView();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const postPayment = async (type: string) => {
+    try {
+      // Then add product
+      await fetch('https://electroshopapi.herokuapp.com/summary/payment', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cartId: global.cartId,
+          paymentOptionType: type,
+        }),
+      });
+      toggleBottomNavigationView();
+      navigation.replace('Orders');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadCart();
   }, []);
+
+  const toggleBottomNavigationView = () => {
+    //Toggling the visibility state of the bottom sheet
+    setVisible(!visible);
+  };
 
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView flex={1}>
         <StatusBar />
-        <BrandAppBar allowBack={true} navigation={navigation} />
+        <BrandAppBar
+          allowBack={true}
+          showCart={false}
+          navigation={navigation}
+        />
         <ScrollView>
           <Flex items={'center'} padding={64} backgroundColor={'#EEE'}>
             <Text variant={'h4'}>Your cart</Text>
@@ -81,7 +137,7 @@ export const CartScreen: ({navigation}) => Node = ({navigation}) => {
             <Flex fill>
               <ScrollView horizontal={true}>
                 <FlatList
-                  data={data.products}
+                  data={data?.products ?? []}
                   keyExtractor={product => product.id}
                   renderItem={({item}) => {
                     let createdProduct = Product.create({
@@ -128,9 +184,52 @@ export const CartScreen: ({navigation}) => Node = ({navigation}) => {
             right: 0,
             padding: 24,
           }}>
-          <Text>Some text</Text>
-          <Button title={'Finalize order'} />
+          <Flex fill inline justify={'between'}>
+            <Text variant={'h4'}>Total:</Text>
+            <Text variant={'h4'}>
+              {(
+                data?.products?.reduce(
+                  (sum, product) => sum + product.grossPrice,
+                  0,
+                ) ?? 0.0
+              ).toFixed(2)}
+            </Text>
+          </Flex>
+          <View height={8} />
+          <Divider inset={32} />
+          <View height={8} />
+          <Button title={'Finalize order'} onPress={() => finalize()} />
         </View>
+        <BottomSheet
+          visible={visible}
+          //setting the visibility state of the bottom shee
+          onBackButtonPress={toggleBottomNavigationView}
+          //Toggling the visibility state on the click of the back botton
+          onBackdropPress={toggleBottomNavigationView}
+          //Toggling the visibility state on the clicking out side of the sheet
+          children={
+            <View
+              style={{width: '100%', backgroundColor: 'white', padding: 24}}>
+              <Button
+                variant={'outlined'}
+                title={'Credit card'}
+                onPress={() => postPayment('CreditCard')}
+              />
+              <View height={8} />
+              <Button
+                variant={'outlined'}
+                title={'Bank transfer'}
+                onPress={() => postPayment('BankTransfer')}
+              />
+              <View height={8} />
+              <Button
+                variant={'outlined'}
+                title={'PayPal'}
+                onPress={() => postPayment('PayPal')}
+              />
+            </View>
+          }
+        />
       </SafeAreaView>
     </IconComponentProvider>
   );
