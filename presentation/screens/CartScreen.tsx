@@ -22,7 +22,7 @@ import {ProductItem} from '../components/ProductItem';
 import Toast from 'react-native-toast-message';
 import {BottomSheet} from 'react-native-btr';
 
-export const CartScreen: ({navigation}) => Node = ({navigation}) => {
+export const CartScreen: {navigation} = ({navigation}) => {
   const [visible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});

@@ -16,7 +16,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {OrderItem} from '../components/OrderItem';
 
-export const OrdersScreen: (navigation: any) => Node = ({navigation}) => {
+export const OrdersScreen = (navigation: any) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]); // Array of products
 

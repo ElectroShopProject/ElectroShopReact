@@ -17,7 +17,7 @@ export const ProductItem = (value: {
   product: Product;
   onAction: Function;
   isCartProduct: boolean;
-}): Node => {
+}) => {
   return (
     <Flex
       flex={1}

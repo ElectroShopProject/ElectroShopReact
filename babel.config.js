@@ -1,4 +1,5 @@
 module.exports = {
+  // devtool: 'source-map',
   presets: ['module:metro-react-native-babel-preset'],
   plugins: [
     [

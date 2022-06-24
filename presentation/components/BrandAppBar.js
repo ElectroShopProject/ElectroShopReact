@@ -2,11 +2,11 @@ import React from 'react';
 import {AppBar, Icon, IconButton} from '@react-native-material/core';
 import {Image} from 'react-native';
 
-export const BrandAppBar: (value: {
+export const BrandAppBar = (value: {
   allowBack: boolean,
   showCart: boolean,
   navigation: any,
-}) => Node = (value: {navigation: any}) => {
+}) => {
   return (
     <AppBar
       title={

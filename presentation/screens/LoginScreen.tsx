@@ -10,7 +10,7 @@ import {
 import React, {useState} from 'react';
 import {LoaderOverlay} from '../components/LoaderOverlay';
 
-export const LoginScreen: (navigation: any) => Node = ({navigation}) => {
+export const LoginScreen = (navigation: any) => {
   const [text, setText] = useState('');
   const [isLoading, setLoading] = useState(false);
 

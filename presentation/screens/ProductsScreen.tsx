@@ -14,7 +14,7 @@ import {Manufacturer} from '../../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
 import Toast from 'react-native-toast-message';
 
-export const ProductsScreen: ({navigation}) => Node = ({navigation}) => {
+export const ProductsScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]); // Array of products
 

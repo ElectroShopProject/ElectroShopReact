@@ -4,7 +4,7 @@ import {Product} from '../../data/models/Product';
 import {View} from 'react-native';
 import {Order} from '../../data/models/Order';
 
-export const OrderItem = (props: {order: Order}): Node => {
+export const OrderItem = (props: {order: Order}) => {
   function getCountedProducts(products: Product[]) {
     // TODO Remove ignores
     let countedProducts = new Map<string, number>();
