@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "ElectroShopReact",
+    "slug": "ElectroShopReact",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
