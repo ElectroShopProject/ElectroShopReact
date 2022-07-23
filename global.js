@@ -1,0 +1,2 @@
+global.userId = '';
+global.cartId = '';
