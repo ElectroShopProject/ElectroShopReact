@@ -50,6 +50,7 @@ export function LoginScreen({navigation}) {
     // })
 
     return (
+        // TODO Handle proper loading view
         <View style={{maxWidth: 1024, alignSelf: 'center', paddingHorizontal: 16}}>
             <View style={{height: Dimensions.get('window').height, justifyContent: 'space-around'}}>
                 <Center>
@@ -62,31 +63,17 @@ export function LoginScreen({navigation}) {
                         }}
                     />
                 </Center>
-                <Text>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                    has
-                    been
-                    the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                    galley
-                    of
-                    type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries,
-                    but
-                    also
-                    the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in
-                    the
-                    1960s
-                    with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-                    with
-                    desktop
-                    publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                {/*// TODO Extract texts*/}
+                <Text style={{fontSize: 20, fontWeight: '500'}}>
+                    Welcome in the best electronic shop! You will find phones, laptops and every electronic equipment that You can imagine.
+                    {'\n\n'}
+                    To start shopping we only need Your login:
                 </Text>
                 <TextInput
                     defaultValue={text}
                     helperText={'Enter your login'}
                     onChangeText={newText => setText(newText)}/>
+                // TODO Add empty field validation
                 <Button title={'Done'} onPress={() => postLogin()}/>
             </View>
         </View>
