@@ -9,14 +9,12 @@ import Toast from "react-native-toast-message";
 import {CartScreen} from "./screens/CartScreen";
 import {IconComponentProvider} from "@react-native-material/core";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {Center} from "./components/Center";
-import {PlatformWidth} from "./components/PlatformWidth";
 
 const Stack = createNativeStackNavigator();
 
 function App() {
     return (
-        <>
+        <View style={{backgroundColor: 'white'}}>
             <NavigationContainer initialRouteName="Login">
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="Login" component={LoginScreen}/>
@@ -26,18 +24,14 @@ function App() {
                 </Stack.Navigator>
             </NavigationContainer>
             <Toast/>
-        </>
+        </View>
     );
 }
 
 export default function () {
     return (
         <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-            <Center>
-                <PlatformWidth>
-                    <App/>
-                </PlatformWidth>
-            </Center>
+            <App/>
         </IconComponentProvider>
     );
 }

@@ -1,11 +1,11 @@
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import React from "react";
 
 type Props = {
     children: JSX.Element,
 };
 
-export function Center(props: Props) {
+export function Fullscreen(props: Props) {
     return (
         <View style={styles.main}>
             {props.children}
@@ -15,6 +15,7 @@ export function Center(props: Props) {
 
 const styles = StyleSheet.create({
     main: {
-        alignItems: 'center',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
     },
 });
