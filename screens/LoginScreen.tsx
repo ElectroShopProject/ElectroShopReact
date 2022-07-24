@@ -73,7 +73,8 @@ export function LoginScreen({navigation}) {
                     defaultValue={text}
                     helperText={'Enter your login'}
                     onChangeText={newText => setText(newText)}/>
-                // TODO Add empty field validation
+                {/*// TODO Add empty field validation*/}
+                {/*// TODO Handle proper button width*/}
                 <Button title={'Done'} onPress={() => postLogin()}/>
             </View>
         </View>
