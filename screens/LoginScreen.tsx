@@ -1,13 +1,11 @@
-import {StyleSheet, Image, SafeAreaView, View, Text, Dimensions} from 'react-native';
+import {StyleSheet, Image, SafeAreaView, View, Text, Dimensions, ActivityIndicator} from 'react-native';
 import {
     Button,
     TextInput,
     Spacer,
 } from '@react-native-material/core';
 import React, {useState} from 'react';
-import {PlatformWidth} from "../components/PlatformWidth";
 import {Center} from "../components/Center";
-import {Fullscreen} from "../components/Fullscreen";
 
 export function LoginScreen({navigation}) {
     const [text, setText] = useState('');
@@ -50,34 +48,41 @@ export function LoginScreen({navigation}) {
     // })
 
     return (
+        <Center>
+            <ActivityIndicator size="large" color="black" style={{backgroundColor: 'green'}}/>
+        </Center>
+
         // TODO Handle proper loading view
-        <View style={{maxWidth: 1024, alignSelf: 'center', paddingHorizontal: 16}}>
-            <View style={{height: Dimensions.get('window').height, justifyContent: 'space-around'}}>
-                <Center>
-                    <Image
-                        source={require('../assets/images/logo.png')}
-                        style={{
-                            width: 300,
-                            aspectRatio: 4.8,
-                            resizeMode: 'contain',
-                        }}
-                    />
-                </Center>
-                {/*// TODO Extract texts*/}
-                <Text style={{fontSize: 20, fontWeight: '500'}}>
-                    Welcome in the best electronic shop! You will find phones, laptops and every electronic equipment that You can imagine.
-                    {'\n\n'}
-                    To start shopping we only need Your login:
-                </Text>
-                <TextInput
-                    defaultValue={text}
-                    helperText={'Enter your login'}
-                    onChangeText={newText => setText(newText)}/>
-                {/*// TODO Add empty field validation*/}
-                {/*// TODO Handle proper button width*/}
-                <Button title={'Done'} onPress={() => postLogin()}/>
-            </View>
-        </View>
+        // <FullScreenLoadingContainer isLoading={true}>
+        //     <View style={{maxWidth: 1024, alignSelf: 'center', paddingHorizontal: 16}}>
+        //         <View style={{height: Dimensions.get('window').height, justifyContent: 'space-around'}}>
+        //             <Center>
+        //                 <Image
+        //                     source={require('../assets/images/logo.png')}
+        //                     style={{
+        //                         width: 300,
+        //                         aspectRatio: 4.8,
+        //                         resizeMode: 'contain',
+        //                     }}
+        //                 />
+        //             </Center>
+        //             {/*// TODO Extract texts*/}
+        //             <Text style={{fontSize: 20, fontWeight: '500'}}>
+        //                 Welcome in the best electronic shop! You will find phones, laptops and every electronic
+        //                 equipment that You can imagine.
+        //                 {'\n\n'}
+        //                 To start shopping we only need Your login:
+        //             </Text>
+        //             <TextInput
+        //                 defaultValue={text}
+        //                 helperText={'Enter your login'}
+        //                 onChangeText={newText => setText(newText)}/>
+        //             {/*// TODO Add empty field validation*/}
+        //             {/*// TODO Handle proper button width*/}
+        //             <Button title={'Done'} onPress={() => postLogin()}/>
+        //         </View>
+        //     </View>
+        // </FullScreenLoadingContainer>
 
         // <Fullscreen>
         //     <SafeAreaView>

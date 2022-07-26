@@ -1,23 +1,22 @@
-import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
-import {Center} from "./Center";
+import {View, ActivityIndicator} from 'react-native';
 
 type Props = {
     isLoading: boolean,
-    children: JSX.Element,
+    children: JSX.Element | JSX.Element[],
 };
 
 export function FullScreenLoadingContainer(props: Props) {
     return (
-        <Center>
+        <View>
             {
                 props.isLoading ? (
-                    <ActivityIndicator size="large" color="black"/>
-                ) : (
-                    <View>
-                        {props.children}
+                    <View style={{flex: 1, alignSelf: 'center', height: 600, backgroundColor: 'red'}}>
+                        <ActivityIndicator size="large" color="black"/>
                     </View>
+                ) : (
+                    props.children
                 )
             }
-        </Center>
+        </View>
     )
 }
