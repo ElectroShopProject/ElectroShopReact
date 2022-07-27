@@ -1,13 +1,13 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View, ViewProps} from 'react-native';
 import React, {ReactElement} from "react";
 
-export class Center extends React.Component<any, any> {
+export class Center extends React.Component<ViewProps> {
     render() {
-        console.log("render center")
-        return (<View>{
+        return (
+            <View style={{flexDirection: 'column', height: 600, backgroundColor: 'red'}}>{
                 React.Children.map(
                     this.props.children,
-                    (child: ReactElement) => React.cloneElement(child, {style: [child.props.style, styles.second]}, null)
+                    (child: ReactElement) => React.cloneElement(child, {style: [child.props.style, styles.main]}, null)
                 )
             }
             </View>
@@ -20,8 +20,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-
-    second: {
-        height: 300,
-    }
 });

@@ -2,10 +2,12 @@ import {StyleSheet, Image, SafeAreaView, View, Text, Dimensions, ActivityIndicat
 import {
     Button,
     TextInput,
-    Spacer,
+    Spacer, VStack, Flex, Box, HStack,
 } from '@react-native-material/core';
 import React, {useState} from 'react';
 import {Center} from "../components/Center";
+import {Column} from "../components/Column";
+import {FullScreen} from "../components/FullScreen";
 
 export function LoginScreen({navigation}) {
     const [text, setText] = useState('');
@@ -48,9 +50,22 @@ export function LoginScreen({navigation}) {
     // })
 
     return (
-        <Center>
-            <ActivityIndicator size="large" color="black" style={{backgroundColor: 'green'}}/>
-        </Center>
+        <FullScreen style={{backgroundColor: 'purple'}}>
+            <View style={{flex: 1, backgroundColor: 'gray'}}>
+                <View style={{width: 250, height: 250, backgroundColor: 'yellow'}}/>
+            </View>
+            {/*<Column>*/}
+            {/*    <Text>A</Text>*/}
+            {/*    <Text>A</Text>*/}
+            {/*    <Text>A</Text>*/}
+            {/*    <Text>A</Text>*/}
+            {/*    <Text>A</Text>*/}
+            {/*</Column>*/}
+            {/*<ActivityIndicator size="large" color="black" style={{backgroundColor: 'green'}}/>*/}
+            {/*<View style={{flex: 1}}>*/}
+            {/*    <Text>Half</Text>*/}
+            {/*</View>*/}
+        </FullScreen>
 
         // TODO Handle proper loading view
         // <FullScreenLoadingContainer isLoading={true}>
