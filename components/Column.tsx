@@ -18,6 +18,5 @@ export class Column extends React.Component<ViewProps> {
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        backgroundColor: 'red'
     },
 });

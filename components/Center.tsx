@@ -4,19 +4,14 @@ import React, {ReactElement} from "react";
 export class Center extends React.Component<ViewProps> {
     render() {
         return (
-            <View style={{flexDirection: 'column', height: 600, backgroundColor: 'red'}}>{
-                React.Children.map(
-                    this.props.children,
-                    (child: ReactElement) => React.cloneElement(child, {style: [child.props.style, styles.main]}, null)
-                )
-            }
-            </View>
+            <View style={styles.main}>{this.props.children}</View>
         )
     }
 }
 
 const styles = StyleSheet.create({
     main: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -2,12 +2,12 @@ import {StyleSheet, Image, SafeAreaView, View, Text, Dimensions, ActivityIndicat
 import {
     Button,
     TextInput,
-    Spacer, VStack, Flex, Box, HStack,
 } from '@react-native-material/core';
 import React, {useState} from 'react';
 import {Center} from "../components/Center";
-import {Column} from "../components/Column";
+import {PlatformWidth} from "../components/PlatformWidth";
 import {FullScreen} from "../components/FullScreen";
+import {SpacedColumn} from "../components/SpacedColumn";
 
 export function LoginScreen({navigation}) {
     const [text, setText] = useState('');
@@ -50,21 +50,30 @@ export function LoginScreen({navigation}) {
     // })
 
     return (
-        <FullScreen style={{backgroundColor: 'purple'}}>
-            <View style={{flex: 1, backgroundColor: 'gray'}}>
-                <View style={{width: 250, height: 250, backgroundColor: 'yellow'}}/>
-            </View>
-            {/*<Column>*/}
-            {/*    <Text>A</Text>*/}
-            {/*    <Text>A</Text>*/}
-            {/*    <Text>A</Text>*/}
-            {/*    <Text>A</Text>*/}
-            {/*    <Text>A</Text>*/}
-            {/*</Column>*/}
-            {/*<ActivityIndicator size="large" color="black" style={{backgroundColor: 'green'}}/>*/}
-            {/*<View style={{flex: 1}}>*/}
-            {/*    <Text>Half</Text>*/}
-            {/*</View>*/}
+        <FullScreen>
+            <SpacedColumn>
+                <Image
+                    source={require('../assets/images/logo.png')}
+                    style={{
+                        width: 300,
+                        aspectRatio: 4.8,
+                        resizeMode: 'contain',
+                    }}
+                />
+                <Text style={{fontSize: 20, fontWeight: '500'}}>
+                    Welcome in the best electronic shop! You will find phones, laptops and every electronic
+                    equipment that You can imagine.
+                    {'\n\n'}
+                    To start shopping please provide Your login:
+                </Text>
+                <TextInput
+                    defaultValue={text}
+                    helperText={'Enter your login'}
+                    onChangeText={newText => setText(newText)}/>
+                {/*// TODO Add empty field validation*/}
+                {/*// TODO Handle proper button width*/}
+                <Button title={'Done'} onPress={() => postLogin()}/>
+            </SpacedColumn>
         </FullScreen>
 
         // TODO Handle proper loading view
