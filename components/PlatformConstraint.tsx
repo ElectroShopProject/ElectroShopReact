@@ -4,7 +4,7 @@ type Props = {
     children: JSX.Element | JSX.Element[],
 };
 
-export function PlatformWidth(props: Props) {
+export function PlatformBackground(props: Props) {
     return (
         <View style={styles.main}>
             {props.children}
