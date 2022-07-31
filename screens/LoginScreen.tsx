@@ -1,4 +1,4 @@
-import {Image, View, Text} from 'react-native';
+import {Image, View, Text, TouchableHighlight} from 'react-native';
 import React, {useState} from 'react';
 import {FullScreen} from "../components/FullScreen";
 import {PlatformBackground} from "../components/PlatformBackground";
@@ -6,7 +6,8 @@ import {Button, TextInput} from "@react-native-material/core";
 import {Padding} from "../components/Padding";
 import {Expand} from "../components/Expand";
 import {PlatformComponentConstraint} from "../components/PlatformComponentConstraint";
-import {PlatformSideView} from "../components/PlatformSideView";
+import {SideView} from "../components/SideView";
+import {Center} from "../components/Center";
 
 export function LoginScreen({navigation}) {
     const [text, setText] = useState('');
@@ -56,8 +57,8 @@ export function LoginScreen({navigation}) {
             <PlatformBackground>
                 <Expand>
                     <Padding>
-                        <View style={{flex: 1, justifyContent: 'space-evenly'}}>
-                            <PlatformSideView>
+                        <SideView>
+                            <Center>
                                 <Image
                                     source={require('../assets/images/logo.png')}
                                     style={{
@@ -67,28 +68,26 @@ export function LoginScreen({navigation}) {
                                         alignSelf: 'flex-start'
                                     }}
                                 />
-                                <Text style={{fontSize: 20, fontWeight: '400'}}>
-                                    Welcome in the best electronic shop! You will find phones, laptops and every
-                                    electronic
-                                    equipment that You can imagine.
-                                </Text>
-                                <Text style={{fontSize: 20, fontWeight: '500'}}>
+                            </Center>
+                            <Text style={{fontSize: 20, fontWeight: '400'}}>
+                                Welcome in the best electronic shop!
+                                You will find here phones, laptops and every
+                                electronic equipment that You can imagine.
+                            </Text>
+                            <TouchableHighlight>
+                                <Text style={{fontSize: 20, fontWeight: '500', textDecorationLine: 'underline'}}>
                                     Before signing-in please read our privacy-policy
                                 </Text>
-                                <Text style={{fontSize: 20, fontWeight: '400'}}>
-                                    To start shopping please provide Your login:
-                                </Text>
-                                <PlatformComponentConstraint>
-                                    <TextInput
-                                        defaultValue={text}
-                                        helperText={'Enter your login'}
-                                        onChangeText={newText => setText(newText)}/>
-                                </PlatformComponentConstraint>
-                                <PlatformComponentConstraint>
-                                    <Button title={'Done'} onPress={() => postLogin()}/>
-                                </PlatformComponentConstraint>
-                            </PlatformSideView>
-                        </View>
+                            </TouchableHighlight>
+                            <Text style={{fontSize: 20, fontWeight: '400'}}>
+                                To start shopping please provide Your login:
+                            </Text>
+                            <TextInput
+                                defaultValue={text}
+                                helperText={'Enter your login'}
+                                onChangeText={newText => setText(newText)}/>
+                            <Button title={'Done'} onPress={() => postLogin()}/>
+                        </SideView>
                     </Padding>
                 </Expand>
             </PlatformBackground>

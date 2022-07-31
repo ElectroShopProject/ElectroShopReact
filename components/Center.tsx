@@ -11,7 +11,7 @@ export class Center extends React.Component<ViewProps> {
 
 const styles = StyleSheet.create({
     main: {
-        alignItems: 'center',
+        alignSelf: 'center',
         justifyContent: 'center'
     },
 });
