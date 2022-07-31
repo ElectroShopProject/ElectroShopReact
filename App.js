@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
     return (
-        <View style={{backgroundColor: 'white'}}>
+        <>
             <NavigationContainer initialRouteName="Login">
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="Login" component={LoginScreen}/>
@@ -24,7 +24,7 @@ function App() {
                 </Stack.Navigator>
             </NavigationContainer>
             <Toast/>
-        </View>
+        </>
     );
 }
 

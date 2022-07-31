@@ -3,6 +3,14 @@
     "name": "ElectroShopReact",
     "slug": "ElectroShopReact",
     "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "pl.tkadziolka.electroshopreact",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "pl.tkadziolka.electroshopreact",
+      "versionCode": 1
+    },
     "assetBundlePatterns": [
       "**/*"
     ]

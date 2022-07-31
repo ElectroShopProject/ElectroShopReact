@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewProps} from 'react-native';
 import React from "react";
 
-export class Center extends React.Component<ViewProps> {
+export class Padding extends React.Component<ViewProps> {
     render() {
         return (
             <View style={[this.props.style, styles.main]}>{this.props.children}</View>
@@ -11,7 +11,6 @@ export class Center extends React.Component<ViewProps> {
 
 const styles = StyleSheet.create({
     main: {
-        alignItems: 'center',
-        justifyContent: 'center'
+        padding: 32
     },
 });

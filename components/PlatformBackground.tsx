@@ -1,22 +1,39 @@
-import {Platform, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, ViewProps} from 'react-native';
+import {CardBackground} from "./CardBackground";
+import {Expand} from "./Expand";
+import {PlatformScreenConstraint} from "./PlatformScreenConstraint";
+import React from "react";
 
-type Props = {
-    children: JSX.Element | JSX.Element[],
-};
-
-export function PlatformConstraint(props: Props) {
-    return (
-        <View style={styles.main}>
-            {props.children}
-        </View>
-    );
+export class PlatformBackground extends React.Component<ViewProps> {
+    render() {
+        return (
+            <Expand style={styles.main}>{
+                Platform.OS === 'web' ? (
+                    <PlatformScreenConstraint>
+                        <Expand>
+                            <CardBackground>
+                                {this.props.children}
+                            </CardBackground>
+                        </Expand>
+                    </PlatformScreenConstraint>
+                ) : (
+                    this.props.children
+                )
+            }
+            </Expand>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
     main: {
         ...Platform.select({
+            android: {
+                backgroundColor: 'white',
+            },
             web: {
-                maxWidth: 1024,
+                alignSelf: 'center',
+                margin: 32,
             },
         }),
     },
