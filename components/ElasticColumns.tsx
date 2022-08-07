@@ -1,21 +1,22 @@
-import {Dimensions, Platform, StyleSheet, View, ViewProps} from 'react-native';
+import {Dimensions, Platform, StyleSheet, useWindowDimensions, View, ViewProps} from 'react-native';
 import React from "react";
 import {Expand} from "./Expand";
 import {SpacedColumn} from "./SpacedColumn";
 import {Padding} from "./Padding";
 import {Center} from "./Center";
 
-export class SideView extends React.Component<ViewProps> {
-    render() {
-        const childCount = React.Children.count(this.props.children)
-        const leftColumnChildren = React.Children.toArray(this.props.children).slice(0, childCount / 2)
-        const rightColumnChildren = React.Children.toArray(this.props.children).slice(childCount / 2, childCount)
-        return <View style={[this.props.style, styles.main]}>{
-            Dimensions.get('window').width >= 768 ? (
+export function ElasticColumns(props: ViewProps) {
+    const window = useWindowDimensions();
+    const childCount = React.Children.count(props.children)
+    const leftColumnChildren = React.Children.toArray(props.children).slice(0, childCount / 2)
+    const rightColumnChildren = React.Children.toArray(props.children).slice(childCount / 2, childCount)
+    return (
+        <View style={[props.style, styles.main]}>{
+            window.width >= 768 ? (
                 <View style={styles.sideView}>
                     <Expand>
                         <Center>
-                            <View style={styles.shrink}>
+                            <View style={styles.halfSize}>
                                 <Expand>
                                     <SpacedColumn>
                                         {leftColumnChildren}
@@ -26,29 +27,27 @@ export class SideView extends React.Component<ViewProps> {
                     </Expand>
                     <View style={styles.divider}/>
                     <Expand>
-                        <Expand>
-                            <Center>
-                                <View style={styles.shrink}>
-                                    <Expand>
-                                        <SpacedColumn>
-                                            {rightColumnChildren}
-                                        </SpacedColumn>
-                                    </Expand>
-                                </View>
-                            </Center>
-                        </Expand>
+                        <Center>
+                            <View style={styles.halfSize}>
+                                <Expand>
+                                    <SpacedColumn>
+                                        {rightColumnChildren}
+                                    </SpacedColumn>
+                                </Expand>
+                            </View>
+                        </Center>
                     </Expand>
                 </View>
             ) : (
                 <Expand>
                     <SpacedColumn>
-                        {this.props.children}
+                        {props.children}
                     </SpacedColumn>
                 </Expand>
             )
         }
         </View>
-    }
+    )
 }
 
 const styles = StyleSheet.create({
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEE',
         margin: 16
     },
-    shrink: {
+    halfSize: {
         flex: 0.5
     },
 });

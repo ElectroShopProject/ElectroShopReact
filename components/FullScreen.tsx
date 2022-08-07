@@ -1,19 +1,11 @@
-import {Dimensions, StyleSheet, View, ViewProps} from 'react-native';
-import React, {ReactElement} from "react";
+import {Dimensions, StyleSheet, useWindowDimensions, View, ViewProps} from 'react-native';
+import React, {ReactElement, useState} from "react";
 
-export class FullScreen extends React.Component<ViewProps> {
-    render() {
-        return (
-            <View style={[this.props.style, styles.main]}>
-                {this.props.children}
-            </View>
-        )
-    }
+export function FullScreen(props: ViewProps) {
+    const window = useWindowDimensions();
+    return (
+        <View style={[props.style, {height: window.height, width: window.width}]}>
+            {props.children}
+        </View>
+    )
 }
-
-const styles = StyleSheet.create({
-    main: {
-        height: Dimensions.get('window').height,
-        width: Dimensions.get('window').width
-    },
-});

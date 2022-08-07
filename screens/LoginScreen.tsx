@@ -1,12 +1,20 @@
-import {Image, View, Text, TouchableHighlight} from 'react-native';
+import {
+    Image,
+    View,
+    Text,
+    TouchableHighlight,
+    useWindowDimensions,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableWithoutFeedback, Keyboard
+} from 'react-native';
 import React, {useState} from 'react';
 import {FullScreen} from "../components/FullScreen";
 import {PlatformBackground} from "../components/PlatformBackground";
 import {Button, TextInput} from "@react-native-material/core";
 import {Padding} from "../components/Padding";
 import {Expand} from "../components/Expand";
-import {PlatformComponentConstraint} from "../components/PlatformComponentConstraint";
-import {SideView} from "../components/SideView";
+import {ElasticColumns} from "../components/ElasticColumns";
 import {Center} from "../components/Center";
 
 export function LoginScreen({navigation}) {
@@ -44,7 +52,6 @@ export function LoginScreen({navigation}) {
             }
         }
     };
-
     // useEffect(() => {
     //     setLoading(true)
     // })
@@ -54,43 +61,49 @@ export function LoginScreen({navigation}) {
     }
     return (
         <FullScreen style={{backgroundColor: '#EEEEEE'}}>
-            <PlatformBackground>
-                <Expand>
-                    <Padding>
-                        <SideView>
-                            <Center>
-                                <Image
-                                    source={require('../assets/images/logo.png')}
-                                    style={{
-                                        width: 300,
-                                        aspectRatio: 4.8,
-                                        resizeMode: 'contain',
-                                        alignSelf: 'flex-start'
-                                    }}
-                                />
-                            </Center>
-                            <Text style={{fontSize: 20, fontWeight: '400'}}>
-                                Welcome in the best electronic shop!
-                                You will find here phones, laptops and every
-                                electronic equipment that You can imagine.
-                            </Text>
-                            <TouchableHighlight>
-                                <Text style={{fontSize: 20, fontWeight: '500', textDecorationLine: 'underline'}}>
-                                    Before signing-in please read our privacy-policy
-                                </Text>
-                            </TouchableHighlight>
-                            <Text style={{fontSize: 20, fontWeight: '400'}}>
-                                To start shopping please provide Your login:
-                            </Text>
-                            <TextInput
-                                defaultValue={text}
-                                helperText={'Enter your login'}
-                                onChangeText={newText => setText(newText)}/>
-                            <Button title={'Done'} onPress={() => postLogin()}/>
-                        </SideView>
-                    </Padding>
-                </Expand>
-            </PlatformBackground>
+            <Expand>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                    <PlatformBackground>
+                        <Expand>
+                            <Padding>
+                                <ElasticColumns>
+                                    <Center>
+                                        <Image
+                                            source={require('../assets/images/logo.png')}
+                                            style={{
+                                                width: 300,
+                                                aspectRatio: 4.8,
+                                                resizeMode: 'contain',
+                                                alignSelf: 'flex-start'
+                                            }}
+                                        />
+                                    </Center>
+                                    <Text style={{fontSize: 20, fontWeight: '400'}}>
+                                        Welcome in the best electronic shop!
+                                        You will find here phones, laptops and every
+                                        electronic equipment that You can imagine.
+                                    </Text>
+                                    <TouchableHighlight>
+                                        <Text
+                                            style={{fontSize: 20, fontWeight: '500', textDecorationLine: 'underline'}}>
+                                            Before signing-in please read our privacy-policy
+                                        </Text>
+                                    </TouchableHighlight>
+                                    <Text style={{fontSize: 20, fontWeight: '400'}}>
+                                        To start shopping please provide Your login:
+                                    </Text>
+                                    <TextInput
+                                        defaultValue={text}
+                                        helperText={'Enter your login'}
+                                        onChangeText={newText => setText(newText)}/>
+                                    <Button title={'Done'} onPress={() => postLogin()}/>
+                                </ElasticColumns>
+                            </Padding>
+                        </Expand>
+                    </PlatformBackground>
+                </KeyboardAvoidingView>
+            </Expand>
         </FullScreen>
     )
 }
