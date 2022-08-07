@@ -11,9 +11,9 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+export default function App() {
     return (
-        <>
+        <IconComponentProvider IconComponent={MaterialCommunityIcons}>
             <NavigationContainer initialRouteName="Login">
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="Login" component={LoginScreen}/>
@@ -23,14 +23,6 @@ function App() {
                 </Stack.Navigator>
             </NavigationContainer>
             <Toast/>
-        </>
-    );
-}
-
-export default function () {
-    return (
-        <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-            <App/>
         </IconComponentProvider>
     );
 }
