@@ -1,11 +1,11 @@
-import {Dimensions, StyleSheet, useWindowDimensions, View, ViewProps} from 'react-native';
-import React, {ReactElement, useState} from "react";
+import {SafeAreaView, useWindowDimensions, ViewProps} from 'react-native';
+import React from "react";
 
 export function FullScreen(props: ViewProps) {
     const window = useWindowDimensions();
     return (
-        <View style={[props.style, {height: window.height, width: window.width}]}>
+        <SafeAreaView style={[props.style, {height: window.height, width: window.width}]}>
             {props.children}
-        </View>
+        </SafeAreaView>
     )
 }

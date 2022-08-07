@@ -1,8 +1,7 @@
-import {Dimensions, Platform, StyleSheet, useWindowDimensions, View, ViewProps} from 'react-native';
+import {StyleSheet, useWindowDimensions, View, ViewProps} from 'react-native';
 import React from "react";
 import {Expand} from "./Expand";
 import {SpacedColumn} from "./SpacedColumn";
-import {Padding} from "./Padding";
 import {Center} from "./Center";
 
 export function ElasticColumns(props: ViewProps) {

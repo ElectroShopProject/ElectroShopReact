@@ -28,7 +28,7 @@ export class PlatformBackground extends React.Component<ViewProps> {
 const styles = StyleSheet.create({
     main: {
         ...Platform.select({
-            android: {
+            native: {
                 backgroundColor: 'white',
             },
             web: {

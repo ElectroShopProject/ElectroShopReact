@@ -5,6 +5,7 @@ type Props = {
     children: JSX.Element | JSX.Element[],
 };
 
+// TODO Refactor
 export function FullScreenLoadingContainer(props: Props) {
     return (
         <View>
