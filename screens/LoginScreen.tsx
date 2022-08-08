@@ -59,10 +59,6 @@ export function LoginScreen({navigation}) {
             }
         }
     };
-    {/*// TODO Add empty field validation*/
-    }
-    {/*// TODO Handle proper button width*/
-    }
     return (
         <FullScreen style={ComponentStyle.background}>
             <Expand>
@@ -91,15 +87,14 @@ export function LoginScreen({navigation}) {
                                     </Text>
                                     {error === undefined ?
                                         <TextInput
+                                            variant="outlined"
                                             defaultValue={login}
                                             helperText={'Enter your login'}
                                             onChangeText={newText => setLogin(newText)}/>
                                         : <TextInput
-                                            color={'red'}
-                                            style={{borderColor: 'red'}}
-                                            inputContainerStyle={{borderColor: 'red'}}
-                                            inputStyle={{borderColor: 'red'}}
-                                            trailingContainerStyle={{borderColor: 'red'}}
+                                            color='red'
+                                            variant="outlined"
+                                            inputStyle={{color: 'red'}}
                                             defaultValue={login}
                                             helperText={error}
                                             onChangeText={newText => setLogin(newText)}/>
