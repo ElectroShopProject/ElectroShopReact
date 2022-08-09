@@ -16,6 +16,7 @@ import {ElasticColumns} from "../components/ElasticColumns";
 import {Center} from "../components/Center";
 import TextStyle from "../styles/TextStyle";
 import ComponentStyle from "../styles/ComponentStyle";
+import {StateWrapper} from "../components/StateWrapper";
 
 export function LoginScreen({navigation}) {
     const [login, setLogin] = useState('');
@@ -63,47 +64,53 @@ export function LoginScreen({navigation}) {
         <FullScreen style={ComponentStyle.background}>
             <Expand>
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                    <PlatformBackground>
-                        <Expand>
-                            <Padding>
-                                <ElasticColumns>
-                                    <Center>
-                                        <Image
-                                            source={require('../assets/images/logo.png')}
-                                            style={styles.image}/>
-                                    </Center>
-                                    <Text style={TextStyle.regular}>
-                                        Welcome in the best electronic shop!
-                                        You will find here phones, laptops and every
-                                        electronic equipment that You can imagine.
-                                    </Text>
-                                    <TouchableHighlight>
-                                        <Text style={TextStyle.highlighted}>
-                                            Before signing-in please read our privacy-policy
-                                        </Text>
-                                    </TouchableHighlight>
-                                    <Text style={TextStyle.regular}>
-                                        To start shopping please provide Your login:
-                                    </Text>
-                                    {error === undefined ?
-                                        <TextInput
-                                            variant="outlined"
-                                            defaultValue={login}
-                                            helperText={'Enter your login'}
-                                            onChangeText={newText => setLogin(newText)}/>
-                                        : <TextInput
-                                            color='red'
-                                            variant="outlined"
-                                            inputStyle={{color: 'red'}}
-                                            defaultValue={login}
-                                            helperText={error}
-                                            onChangeText={newText => setLogin(newText)}/>
-                                    }
-                                    <Button title={'Done'} onPress={() => postLogin()}/>
-                                </ElasticColumns>
-                            </Padding>
-                        </Expand>
-                    </PlatformBackground>
+                    <Expand>
+                        <Center>
+                            <PlatformBackground>
+                                <StateWrapper isLoading={isLoading}>
+                                    <Expand>
+                                        <Padding>
+                                            <ElasticColumns>
+                                                <Center>
+                                                    <Image
+                                                        source={require('../assets/images/logo.png')}
+                                                        style={styles.image}/>
+                                                </Center>
+                                                <Text style={TextStyle.regular}>
+                                                    Welcome in the best electronic shop!
+                                                    You will find here phones, laptops and every
+                                                    electronic equipment that You can imagine.
+                                                </Text>
+                                                <TouchableHighlight>
+                                                    <Text style={TextStyle.highlighted}>
+                                                        Before signing-in please read our privacy-policy
+                                                    </Text>
+                                                </TouchableHighlight>
+                                                <Text style={TextStyle.regular}>
+                                                    To start shopping please provide Your login:
+                                                </Text>
+                                                {error === undefined ?
+                                                    <TextInput
+                                                        variant="outlined"
+                                                        defaultValue={login}
+                                                        helperText={'Enter your login'}
+                                                        onChangeText={newText => setLogin(newText)}/>
+                                                    : <TextInput
+                                                        color='red'
+                                                        variant="outlined"
+                                                        inputStyle={styles.errorInput}
+                                                        defaultValue={login}
+                                                        helperText={error}
+                                                        onChangeText={newText => setLogin(newText)}/>
+                                                }
+                                                <Button title={'Done'} onPress={() => postLogin()}/>
+                                            </ElasticColumns>
+                                        </Padding>
+                                    </Expand>
+                                </StateWrapper>
+                            </PlatformBackground>
+                        </Center>
+                    </Expand>
                 </KeyboardAvoidingView>
             </Expand>
         </FullScreen>
@@ -116,5 +123,8 @@ const styles = StyleSheet.create({
         aspectRatio: 4.8,
         resizeMode: 'contain',
         alignSelf: 'flex-start'
+    },
+    errorInput: {
+        color: 'red'
     }
 })

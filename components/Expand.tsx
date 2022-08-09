@@ -9,7 +9,7 @@ export class Expand extends React.Component<ViewProps> {
                     this.props.children,
                     (child: ReactElement) => React.cloneElement(
                         child,
-                        {style: [child.props.style, styles.main]},
+                        {style: [styles.main, child.props.style]},
                         child.props.children
                     )
                 )
