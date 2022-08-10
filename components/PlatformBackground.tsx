@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
                 backgroundColor: 'white',
             },
             web: {
-                alignSelf: 'center',
                 margin: 32,
             },
         }),
