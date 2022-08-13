@@ -60,6 +60,7 @@ export function LoginScreen({navigation}) {
             }
         }
     };
+
     return (
         <FullScreen style={ComponentStyle.background}>
             <Expand>
