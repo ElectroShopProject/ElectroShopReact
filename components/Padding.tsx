@@ -8,9 +8,7 @@ interface PaddingProps {
 export class Padding extends React.Component<ViewProps & PaddingProps> {
     render() {
         return (
-            <View style={[this.props.style, {padding: this.props.size ?? styles.main.padding}]}>
-                {console.log(styles.main.padding)}
-                {/*// UNDEFINED??*/}
+            <View style={[this.props.style, this.props.size ? {padding: this.props.size} : styles.main]}>
                 {this.props.children}
             </View>
         )

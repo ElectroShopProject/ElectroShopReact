@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import {Product} from '../data/models/Product';
 import {Expand} from "./Expand";
-import {StyleSheet} from "react-native";
+import {Platform, StyleSheet} from "react-native";
 import {Padding} from "./Padding";
 
 export const ProductItem = (value: {
@@ -22,9 +22,8 @@ export const ProductItem = (value: {
 }) => {
     return (
         <Expand>
-            {/*// TODO Debug why padding not works for web from ?? block*/}
             <Padding>
-                <Surface category="large" style={styles.surface}>
+                <Surface elevation={Platform.select({web: 2, default: 4})} category="large">
                     <Padding>
                         <Text>ABCD</Text>
                     </Padding>
@@ -76,10 +75,4 @@ export const ProductItem = (value: {
         // </Flex>
     );
 };
-
-const styles = StyleSheet.create({
-    surface: {
-        elevation: 4,
-    },
-});
 
