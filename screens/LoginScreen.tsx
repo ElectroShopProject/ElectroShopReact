@@ -70,7 +70,7 @@ export function LoginScreen({navigation}) {
                             <PlatformBackground>
                                 <StateWrapper isLoading={isLoading}>
                                     <Expand>
-                                        <Padding>
+                                        <Padding size={32}>
                                             <ElasticColumns>
                                                 <Center>
                                                     <Image

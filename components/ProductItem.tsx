@@ -11,9 +11,9 @@ import {
 } from '@react-native-material/core';
 import React from 'react';
 import {Product} from '../data/models/Product';
-import {View} from 'react-native';
 import {Expand} from "./Expand";
-import {Center} from "./Center";
+import {StyleSheet} from "react-native";
+import {Padding} from "./Padding";
 
 export const ProductItem = (value: {
     product: Product;
@@ -22,9 +22,14 @@ export const ProductItem = (value: {
 }) => {
     return (
         <Expand>
-            <Center>
-                <Text>ABCD</Text>
-            </Center>
+            {/*// TODO Debug why padding not works for web from ?? block*/}
+            <Padding>
+                <Surface category="large" style={styles.surface}>
+                    <Padding>
+                        <Text>ABCD</Text>
+                    </Padding>
+                </Surface>
+            </Padding>
         </Expand>
         // <Flex
         //   fill={true}
@@ -71,3 +76,10 @@ export const ProductItem = (value: {
         // </Flex>
     );
 };
+
+const styles = StyleSheet.create({
+    surface: {
+        elevation: 4,
+    },
+});
+
