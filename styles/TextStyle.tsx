@@ -2,7 +2,8 @@ import {StyleSheet} from "react-native";
 
 export default StyleSheet.create({
     title: {
-        fontSize: 24
+        fontSize: 24,
+        fontWeight: '400'
     },
     regular: {
         fontSize: 20,
@@ -16,5 +17,12 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: '500',
         textDecorationLine: 'underline'
+    },
+    mainPrice: {
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    sidePrice: {
+        fontSize: 14
     }
 })

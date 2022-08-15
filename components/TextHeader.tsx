@@ -19,7 +19,7 @@ export class TextHeader extends React.Component<ViewProps & TextHeaderProps> {
 const styles = StyleSheet.create({
     main: {
         padding: 64,
-        backgroundColor: '#DDDDDD',
+        backgroundColor: '#E8E8E8',
         alignItems: 'center'
     },
 });
