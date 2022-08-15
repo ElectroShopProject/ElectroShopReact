@@ -1,19 +1,13 @@
-import {
-    Divider,
-    Flex,
-    HStack,
-    Icon,
-    IconButton,
-    Spacer,
-    Surface,
-    Text,
-    VStack,
-} from '@react-native-material/core';
 import React from 'react';
 import {Product} from '../data/models/Product';
 import {Expand} from "./Expand";
-import {Platform, StyleSheet} from "react-native";
+import {Platform, StyleSheet, Text, View} from "react-native";
 import {Padding} from "./Padding";
+import TextStyle from "../styles/TextStyle";
+import {HStack, Spacer, Surface} from "@react-native-material/core";
+import {PlatformTouchable} from "./PlatformTouchable";
+import {Spacing} from "./Spacing";
+import {Divider} from "./Divider";
 
 export const ProductItem = (value: {
     product: Product;
@@ -23,11 +17,41 @@ export const ProductItem = (value: {
     return (
         <Expand>
             <Padding>
-                <Surface elevation={Platform.select({web: 2, default: 4})} category="large">
-                    <Padding>
-                        <Text>ABCD</Text>
-                    </Padding>
-                </Surface>
+                <PlatformTouchable>
+                    <Surface elevation={Platform.select({web: 2, default: 4})} category="large">
+                        <Padding>
+                            <Expand style={{
+                                paddingHorizontal: Platform.select({
+                                    web: 0,
+                                    default: 8
+                                })
+                            }}>
+                                <Text numberOfLines={Platform.OS === 'web' ? 1 : 2} style={TextStyle.title}>
+                                    {value.product.name}
+                                </Text>
+                                <Spacing/>
+                                <Text style={TextStyle.bold}>
+                                    {value.product.manufacturer.name}
+                                </Text>
+                                <Spacing/>
+                                <Divider inset={32}/>
+                                <Spacing/>
+                                {/*// TODO This works but refactor*/}
+                                <HStack items={'baseline'}>
+                                    <Text>{value.product.category}</Text>
+                                    <Spacer/>
+                                    <Text style={{fontSize: 12}}>
+                                        {value.product.netPrice.toFixed(2)}
+                                    </Text>
+                                    <View style={{width: 8}}/>
+                                    <Text style={{fontSize: 24, fontWeight: 'bold'}}>
+                                        {value.product.grossPrice.toFixed(2)}
+                                    </Text>
+                                </HStack>
+                            </Expand>
+                        </Padding>
+                    </Surface>
+                </PlatformTouchable>
             </Padding>
         </Expand>
         // <Flex
@@ -75,4 +99,6 @@ export const ProductItem = (value: {
         // </Flex>
     );
 };
+
+const styles = StyleSheet.create({});
 
