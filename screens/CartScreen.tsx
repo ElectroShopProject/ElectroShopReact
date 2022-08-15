@@ -23,6 +23,9 @@ import Toast from 'react-native-toast-message';
 import {BottomSheet} from 'react-native-btr';
 import {Cart} from "../data/models/Cart";
 
+// TODO Remove many material components
+
+// TODO Fix navigation on web
 export const CartScreen = ({navigation}) => {
   const [visible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -31,6 +34,7 @@ export const CartScreen = ({navigation}) => {
   const loadCart = async () => {
     try {
       const response = await fetch(
+          // TODO Extract base url and endpoints
         'https://electroshopapi.herokuapp.com/cart/' + global.cartId,
       );
       const json = await response.json();
@@ -120,6 +124,7 @@ export const CartScreen = ({navigation}) => {
   };
 
   return (
+      // TODO Reduce IconComponentProvider
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <SafeAreaView style={{flex: 1}}>
         <StatusBar />
@@ -129,6 +134,7 @@ export const CartScreen = ({navigation}) => {
           navigation={navigation}
         />
         <ScrollView>
+          // TODO Remove flex and extract styles
           <Flex items={'center'} style={{padding: 64, backgroundColor: '#EEE'}}>
             <Text variant={'h4'}>Your cart</Text>
           </Flex>
@@ -141,6 +147,7 @@ export const CartScreen = ({navigation}) => {
                   data={(data as Cart)?.products ?? []}
                   keyExtractor={product => product.id}
                   renderItem={({item}) => {
+                    // TODO Extract creating product in project
                     let createdProduct = Product.create({
                       id: item.id,
                       name: item.name,
@@ -156,6 +163,7 @@ export const CartScreen = ({navigation}) => {
                     });
 
                     return (
+                        // TODO Extract showing toast
                       <ProductItem
                         isCartProduct={true}
                         product={createdProduct}
@@ -201,6 +209,7 @@ export const CartScreen = ({navigation}) => {
           <View style={{height: 8}} />
           <Button title={'Finalize order'} onPress={() => finalize()} />
         </View>
+        // TODO Set max width for bottom sheet
         <BottomSheet
           visible={visible}
           //setting the visibility state of the bottom shee
@@ -209,6 +218,7 @@ export const CartScreen = ({navigation}) => {
           onBackdropPress={toggleBottomNavigationView}
           //Toggling the visibility state on the clicking out side of the sheet
           children={
+            // TODO Extract bottom sheet as a component
             <View
               style={{width: '100%', backgroundColor: 'white', padding: 24}}>
               <Button
