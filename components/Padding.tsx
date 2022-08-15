@@ -1,16 +1,26 @@
-import {StyleSheet, View, ViewProps} from 'react-native';
+import {Platform, StyleSheet, View, ViewProps} from 'react-native';
 import React from "react";
 
-export class Padding extends React.Component<ViewProps> {
+interface PaddingProps {
+    size?: number | undefined
+}
+
+export class Padding extends React.Component<ViewProps & PaddingProps> {
     render() {
         return (
-            <View style={[this.props.style, styles.main]}>{this.props.children}</View>
+            <View style={[this.props.style, this.props.size ? {padding: this.props.size} : styles.main]}>
+                {this.props.children}
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
     main: {
-        padding: 32
+        padding: Platform.select({
+            web: 16,
+            native: 8,
+            default: 16
+        })
     },
 });

@@ -1,66 +1,78 @@
-import {
-  Divider,
-  Flex,
-  HStack,
-  Icon,
-  IconButton,
-  Spacer,
-  Surface,
-  Text,
-  VStack,
-} from '@react-native-material/core';
 import React from 'react';
 import {Product} from '../data/models/Product';
-import {View} from 'react-native';
+import {Expand} from "./Expand";
+import {Platform, StyleSheet, Text, View} from "react-native";
+import {Padding} from "./Padding";
+import TextStyle from "../styles/TextStyle";
+import {HStack, Icon, IconButton, Spacer, Surface, VStack} from "@react-native-material/core";
+import {PlatformTouchable} from "./PlatformTouchable";
+import {Spacing} from "./Spacing";
+import {Divider} from "./Divider";
+import {HorizontalSpacing} from "./HorizontalSpacing";
 
-export const ProductItem = (value: {
-  product: Product;
-  onAction: Function;
-  isCartProduct: boolean;
-}) => {
-  return (
-    <Flex
-      fill={true}
-      style={{marginHorizontal: 16, marginVertical: 8}}>
-      <Surface elevation={4} category="large" style={{padding: 8}}>
-        <Flex inline={true} style={{padding: 8}}>
-          <Flex fill={true} inline={true} wrap={true}>
-            <VStack fill={true}>
-              <Text variant={'h6'}>{value.product.name}</Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {value.product.manufacturer.name}
-              </Text>
-              <View style={{height: 8}} />
-              <Divider inset={32} />
-              <View style={{height: 8}} />
-              <HStack items={'baseline'}>
-                <Text>{value.product.category}</Text>
-                <Spacer />
-                <Text style={{fontSize: 12}}>
-                  {value.product.netPrice.toFixed(2)}
-                </Text>
-                <View style={{width: 8}} />
-                <Text style={{fontSize: 24, fontWeight: 'bold'}}>
-                  {value.product.grossPrice.toFixed(2)}
-                </Text>
-              </HStack>
-            </VStack>
-          </Flex>
-          <Flex fill={false} center={true}>
-            <IconButton
-                style={{margin: 8}}
-              icon={
-                value.isCartProduct ? (
-                  <Icon name="delete" size={24} />
-                ) : (
-                  <Icon name="cart-plus" size={24} />
-                )
-              }
-              onPress={() => value.onAction()}
-            />
-          </Flex>
-        </Flex>
-      </Surface>
-    </Flex>
-  );
-};
+export function ProductItem(value: {
+    product: Product;
+    onAction: Function;
+    isCartProduct: boolean;
+}) {
+    return (
+        <Padding>
+            <PlatformTouchable>
+                <Surface elevation={Platform.select({web: 2, default: 4})} category="large">
+                    <Padding>
+                        <HStack items={'center'}>
+                            <Expand style={styles.container}>
+                                <Text numberOfLines={Platform.OS === 'web' ? 1 : 2} style={TextStyle.title}>
+                                    {value.product.name}
+                                </Text>
+                                <Spacing/>
+                                <Text style={TextStyle.bold}>
+                                    {value.product.manufacturer.name}
+                                </Text>
+                                <Spacing/>
+                                <Divider inset={32}/>
+                                <Spacing/>
+                                <HStack items={'baseline'}>
+                                    <Text>{value.product.category}</Text>
+                                    <Spacer/>
+                                    <Text style={TextStyle.sidePrice}>
+                                        {value.product.netPrice.toFixed(2)}
+                                    </Text>
+                                    <HorizontalSpacing/>
+                                    <Text style={TextStyle.mainPrice}>
+                                        {value.product.grossPrice.toFixed(2)}
+                                    </Text>
+                                </HStack>
+                            </Expand>
+                            <IconButton
+                                style={styles.cartIcon}
+                                onPress={() => value.onAction()}
+                                icon={getCardActionIcon(value.isCartProduct)}/>
+                        </HStack>
+                    </Padding>
+                </Surface>
+            </PlatformTouchable>
+        </Padding>
+    );
+
+    function getCardActionIcon(isCartProduct: boolean) {
+        return isCartProduct ? (
+            <Icon name="delete" size={24}/>
+        ) : (
+            <Icon name="cart-plus" size={24}/>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: Platform.select({
+            web: 0,
+            default: 8
+        })
+    },
+    cartIcon: {
+        margin: 8
+    }
+});
+

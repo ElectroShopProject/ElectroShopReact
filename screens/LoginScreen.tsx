@@ -60,6 +60,7 @@ export function LoginScreen({navigation}) {
             }
         }
     };
+
     return (
         <FullScreen style={ComponentStyle.background}>
             <Expand>
@@ -69,7 +70,7 @@ export function LoginScreen({navigation}) {
                             <PlatformBackground>
                                 <StateWrapper isLoading={isLoading}>
                                     <Expand>
-                                        <Padding>
+                                        <Padding size={32}>
                                             <ElasticColumns>
                                                 <Center>
                                                     <Image
