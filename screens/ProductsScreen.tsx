@@ -19,7 +19,8 @@ export const ProductsScreen = ({navigation}) => {
             const response = await fetch(
                 'https://electroshopapi.herokuapp.com/products',
             );
-            return await response.json();
+            const products = await response.json();
+            setData(products);
         } catch (error) {
             console.error(error);
         } finally {
