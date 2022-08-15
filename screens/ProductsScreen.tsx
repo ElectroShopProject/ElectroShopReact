@@ -1,9 +1,6 @@
-import {StatusBar, View,} from 'react-native';
-import {Text} from '@react-native-material/core';
+import {StatusBar} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FullScreen} from "../components/FullScreen";
-import {Expand} from "../components/Expand";
-import {Center} from "../components/Center";
 import {ElasticList} from "../components/ElasticList";
 import {ProductItem} from "../components/ProductItem";
 import {Product} from "../data/models/Product";
@@ -52,13 +49,7 @@ export const ProductsScreen = ({navigation}) => {
     };
 
     useEffect(() => {
-        let isMounted = true;               // note mutable flag
-        getProducts().then(data => {
-            if (isMounted) setData(data);    // add conditional check
-        })
-        return () => {
-            isMounted = false
-        };
+        getProducts();
     }, []);
 
     return (

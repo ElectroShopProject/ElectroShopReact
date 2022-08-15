@@ -2,7 +2,6 @@ import {FlatList, FlatListProps, StyleSheet, useWindowDimensions, View, Text, Li
 import React from "react";
 import {ScreenDimensions} from "../ScreenDimensions";
 
-// TODO Migrate to ItemT
 export function ElasticList<ItemT = any>(props: FlatListProps<ItemT>) {
     const window = useWindowDimensions();
     const columnNum = getNumberOfColumns(window.width);
@@ -14,8 +13,6 @@ export function ElasticList<ItemT = any>(props: FlatListProps<ItemT>) {
             data={props.data}
             keyExtractor={(_, index) => index.toString()}
             numColumns={columnNum}
-            // TODO Call props.renderer
-            // Wrap with flex 1 / columns Num
             renderItem={(info: ListRenderItemInfo<ItemT>) => (
                 <View style={{flex: 1 / columnNum}}>
                     {props.renderItem.call(this, info)}
