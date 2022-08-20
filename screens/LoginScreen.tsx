@@ -17,6 +17,7 @@ import {Center} from "../components/Center";
 import TextStyle from "../styles/TextStyle";
 import ComponentStyle from "../styles/ComponentStyle";
 import {StateWrapper} from "../components/StateWrapper";
+import {ScreenDimensions} from "../ScreenDimensions";
 
 export function LoginScreen({navigation}) {
     const [login, setLogin] = useState('');
@@ -68,7 +69,7 @@ export function LoginScreen({navigation}) {
                     <Expand>
                         <Center>
                             <PlatformBackground>
-                                <StateWrapper isLoading={isLoading}>
+                                <StateWrapper maxWidth={ScreenDimensions.medium} isLoading={isLoading}>
                                     <Expand>
                                         <Padding size={32}>
                                             <ElasticColumns>
