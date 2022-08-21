@@ -28,7 +28,7 @@ export class PlatformBottomSheet extends React.Component<ViewProps & PlatformBot
                     children={
                         <View style={styles.sheet}>{
                             (this.props.items ?? []).map((item, index) => {
-                                return getButtonChild(item.name, item.isAvailable, index);
+                                return getButtonChild(item, index, () => this.props.onItemPressed(index));
                             })
                         }</View>
                     }/>
@@ -37,14 +37,14 @@ export class PlatformBottomSheet extends React.Component<ViewProps & PlatformBot
     }
 }
 
-function getButtonChild(value: String, isAvailable: boolean, index: number) {
+function getButtonChild(item: PlatformBottomSheetItem, index: number, onPress: () => any) {
     return (
         <>
             <Button
-                disabled={!isAvailable}
+                disabled={!item.isAvailable}
                 variant={'outlined'}
-                title={value}
-                onPress={() => this.props.onItemPressed(index)}
+                title={item.name}
+                onPress={onPress}
             />
             <Spacing/>
         </>
