@@ -21,10 +21,13 @@ import {StateWrapper} from "../components/StateWrapper";
 import {ElasticList} from "../components/ElasticList";
 import {TextHeader} from "../components/TextHeader";
 import {CheckoutBar} from "../components/CheckoutBar";
+import {PlatformBottomSheet} from "../components/PlatformBottomSheet";
 
 // TODO Fix navigation on web
 export const CartScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
+    const [paymentOptions, setPaymentOptions] = useState([]);
+    const [isPaymentSheetVisible, setPaymentSheetVisible] = useState(false);
     const [data, setData] = useState({});
 
     const loadCart = async () => {
@@ -36,6 +39,31 @@ export const CartScreen = ({navigation}) => {
             const json = await response.json();
             setData(json);
             console.log('Cart = ' + json);
+            await loadPaymentOptions();
+            return json;
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadPaymentOptions = async () => {
+        try {
+            const response = await fetch(
+                // TODO Extract base url and endpoints
+                'https://electroshopapi.herokuapp.com/summary/payment/options',
+                {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const json = await response.json();
+            setPaymentOptions(json.filter((item) => item.isAvailable == true));
+            console.log('Payment options = ' + json.toString());
             return json;
         } catch (error) {
             console.error(error);
@@ -68,6 +96,7 @@ export const CartScreen = ({navigation}) => {
 
     const finalize = async () => {
         try {
+            // TODO Check if there are any products to buy (otherwise show message)
             // Then add product
             await fetch('https://electroshopapi.herokuapp.com/summary/completion', {
                 method: 'POST',
@@ -79,7 +108,7 @@ export const CartScreen = ({navigation}) => {
                     cartId: global.cartId,
                 }),
             });
-            toggleBottomNavigationView();
+            setPaymentSheetVisible(true);
         } catch (error) {
             console.error(error);
         } finally {
@@ -101,7 +130,7 @@ export const CartScreen = ({navigation}) => {
                     paymentOptionType: type,
                 }),
             });
-            toggleBottomNavigationView();
+            setPaymentSheetVisible(false);
             navigation.replace('Orders');
         } catch (error) {
             console.error(error);
@@ -113,11 +142,6 @@ export const CartScreen = ({navigation}) => {
     useEffect(() => {
         loadCart();
     }, []);
-
-    const toggleBottomNavigationView = () => {
-        //Toggling the visibility state of the bottom sheet
-        // setVisible(!visible);
-    };
 
     return (
         <FullScreen>
@@ -163,7 +187,16 @@ export const CartScreen = ({navigation}) => {
                             />
                         );
                     }}/>
-                <CheckoutBar data={data as Cart} onFinalize={finalize()}/>
+                <CheckoutBar data={data as Cart} onFinalize={() => finalize()}/>
+                {/* //TODO Show greyed out not available items */}
+                <PlatformBottomSheet
+                    isVisible={isPaymentSheetVisible}
+                    onClose={() => setPaymentSheetVisible(false)}
+                    items={paymentOptions.map((item) => item.type)}
+                    onItemPressed={index => {
+
+                    }}
+                />
             </StateWrapper>
         </FullScreen>
     );
