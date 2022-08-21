@@ -96,7 +96,16 @@ export const CartScreen = ({navigation}) => {
 
     const finalize = async () => {
         try {
-            // TODO Check if there are any products to buy (otherwise show message)
+            const products = (data as Cart)?.products;
+            if (products === undefined || products.length == 0) {
+                // TODO Extract to platform toast
+                Toast.show({
+                    position: 'bottom',
+                    type: 'error',
+                    text1: 'You have no products to purchase!',
+                });
+                return
+            }
             // Then add product
             await fetch('https://electroshopapi.herokuapp.com/summary/completion', {
                 method: 'POST',
