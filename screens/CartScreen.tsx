@@ -21,7 +21,7 @@ import {StateWrapper} from "../components/StateWrapper";
 import {ElasticList} from "../components/ElasticList";
 import {TextHeader} from "../components/TextHeader";
 import {CheckoutBar} from "../components/CheckoutBar";
-import {PlatformBottomSheet} from "../components/PlatformBottomSheet";
+import {PlatformBottomSheet, PlatformBottomSheetItem} from "../components/PlatformBottomSheet";
 
 // TODO Fix navigation on web
 export const CartScreen = ({navigation}) => {
@@ -62,7 +62,7 @@ export const CartScreen = ({navigation}) => {
                 }
             );
             const json = await response.json();
-            setPaymentOptions(json.filter((item) => item.isAvailable == true));
+            setPaymentOptions(json);
             console.log('Payment options = ' + json.toString());
             return json;
         } catch (error) {
@@ -192,7 +192,7 @@ export const CartScreen = ({navigation}) => {
                 <PlatformBottomSheet
                     isVisible={isPaymentSheetVisible}
                     onClose={() => setPaymentSheetVisible(false)}
-                    items={paymentOptions.map((item) => item.type)}
+                    items={paymentOptions.map((item) => PlatformBottomSheetItem.create({name: item.type, isAvailable: item.isAvailable}))}
                     onItemPressed={index => {
 
                     }}

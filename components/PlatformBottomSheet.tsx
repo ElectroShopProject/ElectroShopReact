@@ -3,10 +3,16 @@ import React from "react";
 import {BottomSheet} from "react-native-btr";
 import {Button} from "@react-native-material/core";
 import {Spacing} from "./Spacing";
+import {Data} from "dataclass";
+
+export class PlatformBottomSheetItem extends Data {
+    name: string;
+    isAvailable: boolean;
+}
 
 interface PlatformBottomSheetProps {
     isVisible: boolean,
-    items?: string[],
+    items?: PlatformBottomSheetItem[],
     onClose: () => any,
     onItemPressed: (index: number) => any
 }
@@ -21,8 +27,8 @@ export class PlatformBottomSheet extends React.Component<ViewProps & PlatformBot
                     onBackdropPress={this.props.onClose}
                     children={
                         <View style={styles.sheet}>{
-                            (this.props.items ?? []).map((value, index) => {
-                                return getButtonChild(value, index);
+                            (this.props.items ?? []).map((item, index) => {
+                                return getButtonChild(item.name, item.isAvailable, index);
                             })
                         }</View>
                     }/>
@@ -31,10 +37,11 @@ export class PlatformBottomSheet extends React.Component<ViewProps & PlatformBot
     }
 }
 
-function getButtonChild(value: String, index: number) {
+function getButtonChild(value: String, isAvailable: boolean, index: number) {
     return (
         <>
             <Button
+                disabled={!isAvailable}
                 variant={'outlined'}
                 title={value}
                 onPress={() => this.props.onItemPressed(index)}
