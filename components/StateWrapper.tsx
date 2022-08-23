@@ -3,15 +3,17 @@ import React from "react";
 import {Expand} from "./Expand";
 
 export interface StateProps {
+    maxWidth?: number,
     isLoading: boolean
 }
 
 export class StateWrapper extends React.Component<StateProps & ViewProps> {
     render() {
+        let windowWidth = Dimensions.get("window").width
         return (
             this.props.isLoading ? (
                 <View style={{
-                    width: Math.min(Dimensions.get("window").width, 1024),
+                    width: this.props.maxWidth ? Math.min(this.props.maxWidth, windowWidth) : windowWidth,
                     height: Dimensions.get("window").height,
                     justifyContent: "center"
                 }}>
