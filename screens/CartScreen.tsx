@@ -1,20 +1,9 @@
-import {
-    StatusBar,
-    View,
-} from 'react-native';
+import {StatusBar} from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
-import {
-    Button,
-    Divider,
-    Flex,
-    Text,
-} from '@react-native-material/core';
 import React, {useEffect, useState} from 'react';
 import {Product} from '../data/models/Product';
 import {Manufacturer} from '../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
-import Toast from 'react-native-toast-message';
-import {BottomSheet} from 'react-native-btr';
 import {Cart} from "../data/models/Cart";
 import {FullScreen} from "../components/FullScreen";
 import {StateWrapper} from "../components/StateWrapper";
@@ -22,6 +11,7 @@ import {ElasticList} from "../components/ElasticList";
 import {TextHeader} from "../components/TextHeader";
 import {CheckoutBar} from "../components/CheckoutBar";
 import {PlatformBottomSheet, PlatformBottomSheetItem} from "../components/PlatformBottomSheet";
+import {PlatformToast} from "../components/PlatformToast";
 
 // TODO Fix navigation on web
 export const CartScreen = ({navigation}) => {
@@ -98,12 +88,7 @@ export const CartScreen = ({navigation}) => {
         try {
             const products = (data as Cart)?.products;
             if (products === undefined || products.length == 0) {
-                // TODO Extract to platform toast
-                Toast.show({
-                    position: 'bottom',
-                    type: 'error',
-                    text1: 'You have no products to purchase!',
-                });
+                PlatformToast.showError('You have no products to purchase!')
                 return
             }
             // Then add product
@@ -182,18 +167,13 @@ export const CartScreen = ({navigation}) => {
                         });
 
                         return (
-                            // TODO Extract showing toast
                             <ProductItem
                                 isCartProduct={true}
                                 product={createdProduct}
                                 onAction={() => {
                                     setLoading(!isLoading);
                                     removeProductFromCart(createdProduct.id);
-                                    Toast.show({
-                                        position: 'bottom',
-                                        type: 'success',
-                                        text1: 'Added to cart',
-                                    });
+                                    PlatformToast.showSuccess('Added to cart');
                                 }}
                             />
                         );
@@ -202,7 +182,10 @@ export const CartScreen = ({navigation}) => {
                 <PlatformBottomSheet
                     isVisible={isPaymentSheetVisible}
                     onClose={() => setPaymentSheetVisible(false)}
-                    items={paymentOptions.map((item) => PlatformBottomSheetItem.create({name: item.type, isAvailable: item.isAvailable}))}
+                    items={paymentOptions.map((item) => PlatformBottomSheetItem.create({
+                        name: item.type,
+                        isAvailable: item.isAvailable
+                    }))}
                     onItemPressed={index => {
                         postPayment(paymentOptions[index].type)
                     }}

@@ -5,10 +5,10 @@ import {ElasticList} from "../components/ElasticList";
 import {ProductItem} from "../components/ProductItem";
 import {Product} from "../data/models/Product";
 import {Manufacturer} from "../data/models/Manufacturer";
-import Toast from "react-native-toast-message";
 import {BrandAppBar} from "../components/BrandAppBar";
 import {TextHeader} from "../components/TextHeader";
 import {StateWrapper} from "../components/StateWrapper";
+import {PlatformToast} from "../components/PlatformToast";
 
 export const ProductsScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
@@ -83,11 +83,7 @@ export const ProductsScreen = ({navigation}) => {
                                 onAction={() => {
                                     setLoading(!isLoading);
                                     addProductToCart(createdProduct.id);
-                                    Toast.show({
-                                        position: 'bottom',
-                                        type: 'success',
-                                        text1: 'Added to cart',
-                                    });
+                                    PlatformToast.showSuccess('Added to cart');
                                 }}
                             />
                         );
