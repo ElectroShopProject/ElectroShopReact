@@ -9,6 +9,7 @@ import {PlatformTouchable} from "./PlatformTouchable";
 import {Spacing} from "./Spacing";
 import {Divider} from "./Divider";
 import {HorizontalSpacing} from "./HorizontalSpacing";
+import {PlatformSurface} from "./PlatformSurface";
 
 export function ProductItem(value: {
     product: Product;
@@ -18,7 +19,7 @@ export function ProductItem(value: {
     return (
         <Padding>
             <PlatformTouchable>
-                <Surface elevation={Platform.select({web: 2, default: 4})} category="large">
+                <PlatformSurface>
                     <Padding>
                         <HStack items={'center'}>
                             <Expand style={styles.container}>
@@ -50,7 +51,7 @@ export function ProductItem(value: {
                                 icon={getCardActionIcon(value.isCartProduct)}/>
                         </HStack>
                     </Padding>
-                </Surface>
+                </PlatformSurface>
             </PlatformTouchable>
         </Padding>
     );

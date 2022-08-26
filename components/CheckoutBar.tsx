@@ -23,6 +23,7 @@ export class CheckoutBar extends React.Component<ViewProps & CheckoutBarProps> {
                 <Spacing/>
                 <Divider inset={32}/>
                 <Spacing/>
+                {/*TODO Refactor to floating button on web! */}
                 <Button title={'Finalize order'} onPress={() => this.props.onFinalize()}/>
             </View>
         )
