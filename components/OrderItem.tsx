@@ -17,6 +17,7 @@ export const OrderItem = (props: { order: Order }) => {
                 <Padding>
                     <Expand>
                         <Text style={TextStyle.title}>{"Products: "}</Text>
+                        <Spacing/>
                         {getProductItems(
                             props.order.products,
                             getCountedProducts(props.order.products),

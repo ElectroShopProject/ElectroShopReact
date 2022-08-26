@@ -60,7 +60,7 @@ export const OrdersScreen = ({navigation}) => {
     return (
         <FullScreen>
             <StatusBar/>
-            <BrandAppBar allowBack={true} showCart={true} navigation={navigation}/>
+            <BrandAppBar allowBack={false} showCart={true} navigation={navigation}/>
             <StateWrapper isLoading={isLoading}>
                 <TextHeader text={'Orders'}/>
                 <ElasticList
