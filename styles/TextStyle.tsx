@@ -24,5 +24,9 @@ export default StyleSheet.create({
     },
     sidePrice: {
         fontSize: 14
+    },
+    product: {
+        fontSize: 16,
+        fontWeight: '500',
     }
 })
