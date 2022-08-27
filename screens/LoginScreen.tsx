@@ -18,6 +18,7 @@ import TextStyle from "../styles/TextStyle";
 import ComponentStyle from "../styles/ComponentStyle";
 import {StateWrapper} from "../components/StateWrapper";
 import {ScreenDimensions} from "../ScreenDimensions";
+import {UserRepository} from "../repository/UserRepository";
 
 export function LoginScreen({navigation}) {
     const [login, setLogin] = useState('');
@@ -34,22 +35,10 @@ export function LoginScreen({navigation}) {
             setError(undefined);
 
             setLoading(true);
-            const response = await fetch(
-                'https://electroshopapi.herokuapp.com/user/login',
-                {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: login,
-                    }),
-                },
-            );
-            const data = await response.json();
-            global.userId = data.id;
-            console.log(data);
+            const user = await UserRepository.login(login);
+            console.log(user);
+
+            global.userId = user.id;
             navigation.replace('Orders');
         } catch (error) {
             console.error(error);
