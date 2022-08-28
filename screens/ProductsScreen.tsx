@@ -3,51 +3,47 @@ import React, {useEffect, useState} from 'react';
 import {FullScreen} from "../components/FullScreen";
 import {ElasticList} from "../components/ElasticList";
 import {ProductItem} from "../components/ProductItem";
-import {Product} from "../data/models/Product";
-import {Manufacturer} from "../data/models/Manufacturer";
 import {BrandAppBar} from "../components/BrandAppBar";
 import {TextHeader} from "../components/TextHeader";
 import {StateWrapper} from "../components/StateWrapper";
 import {PlatformToast} from "../components/PlatformToast";
+import {ProductRepository} from "../repository/ProductRepository";
+import {CartRepository} from "../repository/CartRepository";
 
 export const ProductsScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]); // Array of products
 
-    const getProducts = async () => {
+    async function getProducts() {
         try {
-            const response = await fetch(
-                'https://electroshopapi.herokuapp.com/products',
-            );
-            const products = await response.json();
+            const products = await ProductRepository.products();
             setData(products);
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
-    const addProductToCart = async (id: string) => {
+    async function addProductToCart(productId: string) {
         try {
-            // Then add product
-            await fetch('https://electroshopapi.herokuapp.com/cart/products/add', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cartId: global.cartId,
-                    productId: id,
-                }),
-            });
+            await CartRepository.addProduct(productId);
+            PlatformToast.showSuccess('Added to cart');
         } catch (error) {
             console.error(error);
+            PlatformToast.showError('Error! Product not added');
         } finally {
+            try {
             setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    };
+    }
 
     useEffect(() => {
         getProducts();
@@ -61,33 +57,16 @@ export const ProductsScreen = ({navigation}) => {
                 <TextHeader text={'Products'}/>
                 <ElasticList
                     data={data}
-                    renderItem={({item}) => {
-                        let createdProduct = Product.create({
-                            id: item.id,
-                            name: item.name,
-                            category: item.category,
-                            netPrice: item.netPrice,
-                            grossPrice: item.grossPrice,
-                            taxRate: item.taxRate,
-                            manufacturer: Manufacturer.create({
-                                id: item.manufacturer.id,
-                                name: item.manufacturer.name,
-                                country: item.manufacturer.country,
-                            }),
-                        });
-
-                        return (
-                            <ProductItem
-                                isCartProduct={false}
-                                product={createdProduct}
-                                onAction={() => {
-                                    setLoading(!isLoading);
-                                    addProductToCart(createdProduct.id);
-                                    PlatformToast.showSuccess('Added to cart');
-                                }}
-                            />
-                        );
-                    }}
+                    renderItem={({item}) =>
+                        (<ProductItem
+                            isCartProduct={false}
+                            product={item}
+                            onAction={() => {
+                                setLoading(!isLoading);
+                                addProductToCart(item.id);
+                            }}
+                        />)
+                    }
                 />
             </StateWrapper>
         </FullScreen>
