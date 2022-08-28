@@ -46,8 +46,8 @@ export class ElectroShopApi {
         return (await this.post('/summary/payment', body))
     }
 
-    static async getPaymentOptions(body: string): Promise<any> {
-        return (await this.post('/summary/payment/options', body))
+    static async getPaymentOptions(): Promise<any> {
+        return (await this.post('/summary/payment/options', undefined))
     }
 
     // HTTP

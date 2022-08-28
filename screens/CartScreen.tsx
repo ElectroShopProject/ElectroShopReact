@@ -1,8 +1,6 @@
 import {StatusBar} from 'react-native';
 import {BrandAppBar} from '../components/BrandAppBar';
 import React, {useEffect, useState} from 'react';
-import {Product} from '../data/models/Product';
-import {Manufacturer} from '../data/models/Manufacturer';
 import {ProductItem} from '../components/ProductItem';
 import {Cart} from "../data/models/Cart";
 import {FullScreen} from "../components/FullScreen";
@@ -37,23 +35,10 @@ export const CartScreen = ({navigation}) => {
         }
     }
 
-    const loadPaymentOptions = async () => {
+    async function loadPaymentOptions() {
         try {
-            const response = await fetch(
-                // TODO Extract base url and endpoints
-                'https://electroshopapi.herokuapp.com/summary/payment/options',
-                {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            const json = await response.json();
-            setPaymentOptions(json);
-            console.log('Payment options = ' + json.toString());
-            return json;
+            const options = await SummaryRepository.paymentOptions();
+            setPaymentOptions(options);
         } catch (error) {
             console.error(error);
         } finally {
@@ -63,22 +48,11 @@ export const CartScreen = ({navigation}) => {
                 console.error(error);
             }
         }
-    };
+    }
 
-    const removeProductFromCart = async (id: string) => {
+    async function removeProductFromCart(productId: string) {
         try {
-            // Then add product
-            await fetch('https://electroshopapi.herokuapp.com/cart/products/remove', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cartId: global.cartId,
-                    productId: id,
-                }),
-            });
+            await CartRepository.removeProduct(productId);
             await loadCart();
         } catch (error) {
             console.error(error);
@@ -89,7 +63,7 @@ export const CartScreen = ({navigation}) => {
                 console.error(error);
             }
         }
-    };
+    }
 
     async function finalize() {
         try {

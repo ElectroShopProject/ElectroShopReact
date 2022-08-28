@@ -33,4 +33,13 @@ export class CartRepository {
         )
     }
 
+    static async removeProduct(productId: string) {
+        await ElectroShopApi.removeProduct(
+            JSON.stringify({
+                cartId: global.cartId,
+                productId: productId,
+            })
+        )
+    }
+
 }
