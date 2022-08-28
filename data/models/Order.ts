@@ -1,8 +1,9 @@
 import {Product} from './Product';
 import {User} from './User';
 import {Payment} from './Payment';
+import {Data} from "dataclass";
 
-export class Order {
+export class Order extends Data {
   cartId: string;
   user: User;
   payment: Payment;

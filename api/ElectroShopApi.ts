@@ -1,10 +1,24 @@
 const baseUrl = 'https://electroshopapi.herokuapp.com';
 
-class ElectroShopApi {
+export class ElectroShopApi {
 
-    static async login(body: BodyInit): Promise<any> {
+    // User
+
+    static async login(body: string): Promise<any> {
         return await this.post('/user/login', body);
     }
+
+    static async orders(userId: string): Promise<any> {
+        return await this.get('/user/orders' + "?userId=" + userId);
+    }
+
+    // Cart
+
+    static async createCart(body: string) {
+        return await this.post('/cart', body);
+    }
+
+    // Product
 
     static async products(): Promise<any> {
         return await this.get('/products');
@@ -16,7 +30,7 @@ class ElectroShopApi {
         return (await fetch(baseUrl + endpoint)).json();
     }
 
-    private static async post(endpoint: string, body: BodyInit) {
+    private static async post(endpoint: string, body: string) {
         return (await fetch(
             baseUrl + endpoint,
             {

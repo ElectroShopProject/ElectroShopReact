@@ -7,55 +7,34 @@ import {TextHeader} from "../components/TextHeader";
 import {StateWrapper} from "../components/StateWrapper";
 import {FullScreen} from "../components/FullScreen";
 import {PlatformActionButton} from "../components/PlatformActionButton";
+import {CartRepository} from "../repository/CartRepository";
+import {UserRepository} from "../repository/UserRepository";
 
 export const OrdersScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]); // Array of products
+    const [data, setData] = useState([]); // Array of orders
 
-    const createCart = async () => {
+    async function getOrders() {
         try {
-            const response = await fetch(
-                'https://electroshopapi.herokuapp.com/cart',
-                {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({userId: global.userId}),
-                },
-            );
-            const cart = await response.json();
-            global.cartId = cart.id;
-            console.log(global.cartId);
+            const orders = await UserRepository.orders();
+            // Make sure cart is ready to modifications
+            await CartRepository.create();
+            setData(orders);
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
-        }
-    };
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
 
-    const getOrders = async () => {
-        try {
-            const response = await fetch(
-                'https://electroshopapi.herokuapp.com/user/orders?userId=' +
-                global.userId,
-            );
-            const json = await response.json();
-            setData(json);
-            console.log(json);
-            await createCart();
-            return json;
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
+            }
         }
-    };
+    }
 
     useEffect(() => {
         getOrders();
-    }, []);
+    }, data);
 
     return (
         <FullScreen>

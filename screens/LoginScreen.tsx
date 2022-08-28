@@ -25,7 +25,7 @@ export function LoginScreen({navigation}) {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
-    const postLogin = async () => {
+    async function postLogin() {
         try {
             if (login.length < 3) {
                 setError('Your login is too short. Put min. 3 characters.');
@@ -33,12 +33,8 @@ export function LoginScreen({navigation}) {
             }
 
             setError(undefined);
-
             setLoading(true);
-            const user = await UserRepository.login(login);
-            console.log(user);
-
-            global.userId = user.id;
+            await UserRepository.login(login);
             navigation.replace('Orders');
         } catch (error) {
             console.error(error);
@@ -49,7 +45,7 @@ export function LoginScreen({navigation}) {
                 console.log(e);
             }
         }
-    };
+    }
 
     return (
         <FullScreen style={ComponentStyle.background}>

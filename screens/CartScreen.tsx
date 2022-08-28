@@ -13,7 +13,6 @@ import {CheckoutBar} from "../components/CheckoutBar";
 import {PlatformBottomSheet, PlatformBottomSheetItem} from "../components/PlatformBottomSheet";
 import {PlatformToast} from "../components/PlatformToast";
 
-// TODO Fix navigation on web
 export const CartScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
     const [paymentOptions, setPaymentOptions] = useState([]);
