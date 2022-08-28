@@ -12,6 +12,8 @@ import {TextHeader} from "../components/TextHeader";
 import {CheckoutBar} from "../components/CheckoutBar";
 import {PlatformBottomSheet, PlatformBottomSheetItem} from "../components/PlatformBottomSheet";
 import {PlatformToast} from "../components/PlatformToast";
+import {CartRepository} from "../repository/CartRepository";
+import {SummaryRepository} from "../repository/SummaryRepository";
 
 export const CartScreen = ({navigation}) => {
     const [isLoading, setLoading] = useState(true);
@@ -19,23 +21,21 @@ export const CartScreen = ({navigation}) => {
     const [isPaymentSheetVisible, setPaymentSheetVisible] = useState(false);
     const [data, setData] = useState({});
 
-    const loadCart = async () => {
+    async function loadCart() {
         try {
-            const response = await fetch(
-                // TODO Extract base url and endpoints
-                'https://electroshopapi.herokuapp.com/cart/' + global.cartId,
-            );
-            const json = await response.json();
-            setData(json);
-            console.log('Cart = ' + json);
+            const cart = await CartRepository.get();
+            setData(cart);
             await loadPaymentOptions();
-            return json;
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    };
+    }
 
     const loadPaymentOptions = async () => {
         try {
@@ -57,7 +57,11 @@ export const CartScreen = ({navigation}) => {
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -79,60 +83,52 @@ export const CartScreen = ({navigation}) => {
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
-    const finalize = async () => {
+    async function finalize() {
         try {
             const products = (data as Cart)?.products;
-            if (products === undefined || products.length == 0) {
+            if (products === undefined || products.length <= 0) {
                 PlatformToast.showError('You have no products to purchase!')
                 return
             }
-            // Then add product
-            await fetch('https://electroshopapi.herokuapp.com/summary/completion', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cartId: global.cartId,
-                }),
-            });
+
+            await SummaryRepository.complete();
             setPaymentSheetVisible(true);
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    };
+    }
 
-    const postPayment = async (type: string) => {
+    async function postPayment(type: string) {
         try {
             setPaymentSheetVisible(false);
             setLoading(true);
-            // Then add product
-            await fetch('https://electroshopapi.herokuapp.com/summary/payment', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cartId: global.cartId,
-                    paymentOptionType: type,
-                }),
-            });
+            await SummaryRepository.payment(type);
             setLoading(false);
             navigation.replace('Orders');
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            try {
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    };
+    }
 
     useEffect(() => {
         loadCart();
@@ -145,38 +141,21 @@ export const CartScreen = ({navigation}) => {
                 allowBack={true}
                 showCart={false}
                 navigation={navigation}/>
-            <TextHeader text={"Your cart"}/>
+            <TextHeader text={"Cart"}/>
             <StateWrapper isLoading={isLoading}>
                 <ElasticList
                     data={(data as Cart)?.products ?? []}
-                    renderItem={({item}) => {
-                        // TODO Extract creating product in project
-                        let createdProduct = Product.create({
-                            id: item.id,
-                            name: item.name,
-                            category: item.category,
-                            netPrice: item.netPrice,
-                            grossPrice: item.grossPrice,
-                            taxRate: item.taxRate,
-                            manufacturer: Manufacturer.create({
-                                id: item.manufacturer.id,
-                                name: item.manufacturer.name,
-                                country: item.manufacturer.country,
-                            }),
-                        });
-
-                        return (
-                            <ProductItem
-                                isCartProduct={true}
-                                product={createdProduct}
-                                onAction={() => {
-                                    setLoading(!isLoading);
-                                    removeProductFromCart(createdProduct.id);
-                                    PlatformToast.showSuccess('Added to cart');
-                                }}
-                            />
-                        );
-                    }}/>
+                    renderItem={({item}) => (
+                        <ProductItem
+                            isCartProduct={true}
+                            product={item}
+                            onAction={() => {
+                                setLoading(!isLoading);
+                                removeProductFromCart(item.id);
+                                PlatformToast.showSuccess('Added to cart');
+                            }}
+                        />)
+                    }/>
                 <CheckoutBar data={data as Cart} onFinalize={() => finalize()}/>
                 <PlatformBottomSheet
                     isVisible={isPaymentSheetVisible}

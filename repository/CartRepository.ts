@@ -15,6 +15,15 @@ export class CartRepository {
         return cart;
     }
 
+    static async get(): Promise<Cart> {
+        const cart = CartMapper.json(
+            await ElectroShopApi.getCart(global.cartId)
+        );
+
+        console.log(cart);
+        return cart;
+    }
+
     static async addProduct(productId: string) {
         await ElectroShopApi.addProduct(
             JSON.stringify({

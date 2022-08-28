@@ -14,6 +14,10 @@ export class ElectroShopApi {
 
     // Cart
 
+    static async getCart(cartId: string): Promise<any> {
+        return await this.get('/cart' + '/' + cartId);
+    }
+
     static async createCart(body: string) {
         return await this.post('/cart', body);
     }
@@ -32,6 +36,22 @@ export class ElectroShopApi {
         return await this.get('/products');
     }
 
+    // Summary
+
+    static async complete(body: string): Promise<any> {
+        return (await this.post('/summary/completion', body))
+    }
+
+    static async payment(body: string): Promise<any> {
+        return (await this.post('/summary/payment', body))
+    }
+
+    static async getPaymentOptions(body: string): Promise<any> {
+        return (await this.post('/summary/payment/options', body))
+    }
+
+    // HTTP
+
     private static async get(endpoint: string): Promise<string> {
         return (await fetch(baseUrl + endpoint)).json();
     }
@@ -48,9 +68,5 @@ export class ElectroShopApi {
                 },
             }
         )).json();
-    }
-
-    private static async delete() {
-
     }
 }
