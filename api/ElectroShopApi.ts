@@ -18,13 +18,19 @@ export class ElectroShopApi {
         return await this.post('/cart', body);
     }
 
+    static async addProduct(body: string) {
+        return await this.post('/cart/products/add', body);
+    }
+
+    static async removeProduct(body: string) {
+        return await this.post('/cart/products/remove', body);
+    }
+
     // Product
 
     static async products(): Promise<any> {
         return await this.get('/products');
     }
-
-
 
     private static async get(endpoint: string): Promise<string> {
         return (await fetch(baseUrl + endpoint)).json();

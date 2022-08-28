@@ -1,6 +1,4 @@
-import {UserMapper} from "../mapper/UserMapper";
 import {ElectroShopApi} from "../api/ElectroShopApi";
-import {User} from "../data/models/User";
 import {Cart} from "../data/models/Cart";
 import {CartMapper} from "../mapper/CartMapper";
 
@@ -15,6 +13,15 @@ export class CartRepository {
         global.cartId = cart.id;
 
         return cart;
+    }
+
+    static async addProduct(productId: string) {
+        await ElectroShopApi.addProduct(
+            JSON.stringify({
+                cartId: global.cartId,
+                productId: productId,
+            })
+        )
     }
 
 }
